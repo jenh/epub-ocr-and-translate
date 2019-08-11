@@ -8,10 +8,10 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
 - python 2.7
 - ImageMagick
 - tesseract
-- For translation, Google Translate API (with GOOGLE\_APPLICATION\_CREDENTIALS in your env) or [translate-shell](https://github.com/soimort/translate-shell). 
+- For translation, Google Translate API (with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). 
 - pandoc
 - xetex
-- ebook-viewer
+- ebook-viewer (optional; to view output)
 
 
 ### Quick summary:
@@ -20,25 +20,28 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
 
     Given a PDF file, OCR and clean it up a little. Requires ImageMagick, tesseract, pdfinfo/pdfseparate. 
 
-2. Translate a file with `trans.py` or `process.sh`
+    **Usage**: 
 
-    `trans.py` uses Google's Translate API, which costs $. `process.sh` uses [`translate-shell`](https://github.com/soimort/translate-shell), which is awesome, but you can get blocked by the engines, so it's not great for large texts (but you *can* specify google, bing, yandex). Both output `$source_lang_para \n $dest_lang_para`. 
+    `sh ocr.sh filename.pdf eng`
 
-    **Usage for trans.py:** `python trans.py inputfile.txt two_letter_dest_lang` 
-    
-    **Usage for process.sh:** `sh process.sh translation_engine source_file output_file`
-    
-    (`process.sh` is currently hardcoded for ru/en, you can change this and I will fix at some point, but `trans.py`, while it costs $, does work better/faster/more reliably.) 
+    where `eng` is the three letter language code of the source document. See list [here](http://www.loc.gov/standards/iso639-2/php/code_list.php). Source language document is very important! Note that this may take awhile, depending on the number of pages in your PDF. 
 
+2. Translate a file with `trans.py`
+
+    `trans.py` uses Google's Translate API, which costs $ or [`translate-shell`](https://github.com/soimort/translate-shell), which is awesome, but you can and will get blocked by translation engines, so it's not great for large texts (but you *can* specify google, bing, yandex, etc). WARNING! translate-shell with many of the engines, even Google, can be unreliable because engines WILL block you after a certain number of characters. For important work, Google Cloud API is still unfortunately your best bet, though pricey, like $10/million characters.
+
+    **Usage for trans.py:** `python trans.py -i source_text_file -s two-letter-source_lang -t two-letter-target_lang [-e trans|gcloud] [-w wait_seconds]`
+
+
+    -e is optional, uses translate-shell by default. There's a default two second wait between translation requests, you can change this with -w.
 
 3. Cut files into individual markdown files for each chapter using **split.py**
-
    
     **Usage:** 
     
     `python split.py filename.txt CHAPTER` 
     
-    (where CHAPTER is the chapter-delimiter; accepts UTF-8, so you can use other languages where necessary. For example, if your source text is Russian, you could use "Глава").
+    (where CHAPTER is the chapter-delimiter; accepts UTF-8, so you can use other languages where necessary. For example, if your source text is Russian, you could use "Глава"). 
 
 4. Edit markdown output as needed. This is probably the hardest part. Good luck! You may want to skip this and run the other steps to see how much more post-processing work you've got to do. 
 

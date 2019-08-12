@@ -49,9 +49,11 @@ sed -i 's/\o14//g' $filename.txt
 
 # Change dumbquotes to smartquotes
 
-echo "Changing quotes to smartquotes for translate-shell. Unterminated quotes cause issues with line-by-line translation sent via shell; once you\'re translated, you may want to change back"
+echo "Changing quotes to smartquotes for translate-shell. Unterminated quotes cause issues with line-by-line translation sent via shell; once translated, you may want to change back"
 sed -i -zEe 's/\x27\x27/"/g; s/\x27([^\x27]*)\x27/‘\1’/g; s/"([^"]*)"/“\1”/g; ' $filename.txt
-
+# Find unmatched quotes and backticks
+sed -i 's/`/‘/g' $filename.txt
+sed -i 's/"/”/g' $filename.txt
 echo "OCR process complete. Full OCRed text is available at $filename.txt. Individual PDF, TIFF and text files are located in the singles/ directory"
 
 

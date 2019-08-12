@@ -77,7 +77,7 @@ if trans_type=='trans':
         time.sleep(wait_secs)
         translated = "trans -b -e " + engine + " -s " + source_lang + " -t " +  target_lang + " \"" + x + "\""
         translation = subprocess.check_output(translated,shell=True)
-        output_file.write("\n" + translation + "\n")
+        output_file.write("\n" + translation)
 else:
     for x in doc:
         output_file.write("\n" + x + "\n")
@@ -86,6 +86,6 @@ else:
           x,
           target_language=target_lang,
           source_language=source_lang)
-        output_file.write("\n" + translation['translatedText'].encode("utf-8") + "\n")
+        output_file.write("\n" + translation['translatedText'].encode("utf-8"))
 
 print "Translation output located in " + output_file_name 

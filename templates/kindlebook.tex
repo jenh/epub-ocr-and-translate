@@ -1,0 +1,285 @@
+\documentclass[11pt]{memoir}
+
+% https://tex.stackexchange.com/questions/427451/dot-between-chapter-number-and-figure-number-disapear-after-update
+\makeatletter
+\renewcommand{\counterwithin}{\@ifstar{\@csinstar}{\@csin}}
+\makeatother
+
+% increase spacing in TOC
+\setlength\cftsectionnumwidth{3em}
+
+% table spacing
+\usepackage[math]{cellspace}
+\cellspacetoplimit 3pt
+\cellspacebottomlimit 3pt
+\setlength{\arraycolsep}{4pt}
+
+%\newcommand{\atsign}{@}
+
+\makeatletter
+
+% Epub vs Print
+
+\@ifpackageloaded{tex4ht}{%
+
+	% Ebook version
+	\newcommand{\isebook}{1}
+	\newcommand{\theppendix}{}
+	%\newcommand{\Hy@MakeCurrentHrefAuto}{}
+	%\newcommand{\Hy@SectionHShift}{}
+  	\renewenvironment{framed}{}{}
+  	\renewenvironment{shaded}{}{}
+	\usepackage{amssymb}
+	\usepackage{amsmath}
+	\newcounter{Hfootnote}
+	\newlength{\imgwidth}
+	\newcommand{\inclgraphics}[2][]{\includegraphics[width=\imgwidth]{#2}}
+	
+	\DeclareGraphicsRule{.png}{eps}{.bb}{}
+	\DeclareGraphicsRule{.jpg}{eps}{.bb}{}
+	
+}{%
+
+	% Print version
+	\newcommand{\isebook}{0}
+	\newcommand{\theppendix}{\appendix}
+	\usepackage{kpfonts}
+	\newlength{\imgwidth}
+	\newcommand{\inclgraphics}[2][]{\includegraphics[#1]{#2}}
+
+}
+
+% "L" ragged right column type
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+% Change geometry if making different sizes; even if specified in
+% newcommand, that seems to only affect page layout, not page size.
+% The PDF itself appears to only accept the size if specified in usepackage.
+
+\makechapterstyle{ell3}{%
+	\chapterstyle{default}
+	\renewcommand*{\chapnumfont}{\normalfont\HUGE\sffamily}
+	\renewcommand*{\chaptitlefont}{\normalfont\huge\sffamily}
+	\settowidth{\chapindent}{\chapnumfont 111}
+	\renewcommand*{\chapterheadstart}{\begingroup
+		\vspace*{\beforechapskip}%
+		\begin{adjustwidth}{}{-0\chapindent}%
+			\hrulefill
+			\smash{\rule{0.4pt}{15mm}}
+		\end{adjustwidth}\endgroup}
+	\renewcommand*{\printchaptername}{}
+	\renewcommand*{\chapternamenum}{}
+	\renewcommand*{\printchapternum}{%
+		\begin{adjustwidth}{}{-0\chapindent}
+			\hfill
+			\raisebox{10mm}[0pt][0pt]{\chapnumfont \thechapter}%
+			\hspace*{1em}
+		\end{adjustwidth}\vspace*{-3.0\onelineskip}}
+	\renewcommand*{\printchaptertitle}[1]{%
+		\vskip\onelineskip
+		\raggedleft {\chaptitlefont ##1\par}\nobreak}}
+
+\makechapterstyle{bianchi2}{%
+	\chapterstyle{default}
+	\renewcommand*{\chapnamefont}{\normalfont\Large\sffamily\itshape}
+	\renewcommand*{\chapnumfont}{\normalfont\huge}
+	\renewcommand*{\printchaptername}{%
+		\chapnamefont\centering\@chapapp}
+	\renewcommand*{\printchapternum}{\chapnumfont \textit{\thechapter}}
+	\renewcommand*{\chaptitlefont}{\normalfont\LARGE\sffamily}
+	\renewcommand*{\printchaptertitle}[1]{%
+		\vspace{-10em}\hrule\vskip\onelineskip 
+		\centering \chaptitlefont\textbf{##1}\par}
+	\renewcommand*{\afterchaptertitle}{\vskip\onelineskip \hrule
+		\vskip\onelineskip}
+	\renewcommand*{\printchapternonum}{%
+		\vphantom{\chapnumfont \textit{9}}\afterchapternum}}
+
+
+\makeatletter
+\newcommand{\verbatimfont}[1]{\def\verbatim@font{#1}}%
+\makeatother
+
+\usepackage{fancyvrb}
+\fvset{tabsize=8}
+
+% custom margins
+%\input{print/margins.tex}
+\setstocksize{9in}{6in}
+\settrimmedsize{9in}{6in}{*}
+\settrims{0pt}{0pt}
+\settypeblocksize{7in}{4.25in}{*}
+\setlrmargins{1.05in}{*}{*}
+\setulmargins{1in}{*}{*}
+\checkandfixthelayout
+\newcommand*{\PRINTBOOK}{}
+
+
+\makeatletter
+\@ifpackageloaded{tex4ht}{%
+	\setlength{\imgwidth}{400pt}
+}{%
+	\setlength{\imgwidth}{\textwidth}
+}
+
+% tlmgr install package_name
+%\usepackage[size=novel,gutter=.75in]{createspace}
+\usepackage[scaled]{beramono}
+%\renewcommand*\familydefault{\ttdefault} %% Only if the base font of the document is to be typewriter style
+\usepackage[T1]{fontenc}
+ %% Only if the base font of the document is to be typewriter style
+%\usepackage[T1]{fontenc}
+\usepackage{ifthen}
+\usepackage{colortbl}
+\usepackage{longtable}
+%\usepackage{tabu}
+\usepackage{graphicx}
+\usepackage{alltt}
+\usepackage{float} 
+\usepackage{listings}
+\usepackage{enumitem}
+%\usepackage{framed} % already in memoir?
+\usepackage[super,numbers,sort&compress]{natbib} % For bibliography
+% \usepackage[backend=biber]{biblatex}
+% \setcounter{biburllcpenalty}{7000}
+% \setcounter{biburlucpenalty}{8000}
+%\usepackage{breakurl}
+\usepackage{makeidx} % For index
+\usepackage[hyphens]{url}
+\@ifpackageloaded{tex4ht}{%
+}{%
+\usepackage[colorlinks=false,draft]{hyperref} %<- this adds hyperlinks for online version, remove DRAFT to show links.
+\hypersetup{breaklinks=true}
+\Urlmuskip=0mu plus 1mu
+}
+% \usepackage{fontspec} %Only works with luatex or xetex; figure out later
+\usepackage[utf8]{inputenc}
+\clubpenalty=10001
+\widowpenalty=10001
+\brokenpenalty=4991
+\predisplaypenalty=10000
+\postdisplaypenalty=1549
+\displaywidowpenalty=1602
+
+% Puts footnotes at the actual bottom
+\usepackage[bottom]{footmisc}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage{epigraph}
+\setlength\epigraphwidth{.75\textwidth}
+\setlength\epigraphrule{0pt}
+\usepackage{xfrac}
+\usepackage{needspace}
+% Tweak to decrease vertical space before and after floats. Revisit.
+
+\setlength{\intextsep}{6pt} 
+\setlength{\belowcaptionskip}{-10pt}
+
+\hyphenpenalty=5000
+\tolerance=1000
+
+% Caption sizes
+
+\captionnamefont{\small\itshape}
+\captiontitlefont{\small\itshape}
+
+\setlist[itemize]{noitemsep, topsep=0pt}
+
+
+% This removes the extra space in enumerated and itemized lists.	
+%\setlist{nosep}
+%\MakeShortVerb{@}
+
+% for instructions
+\newcommand{\asm}{\lstinline}
+
+% Default memoir style is no dots for chapter titles in TOC. I want leaders, this command gives us leaders again.
+\renewcommand{\cftchapterdotsep}{\cftdotsep}
+% Change chapter title font, possibly tweak this.
+\renewcommand*{\chapnumfont}{\normalfont\Huge\sffamily}
+\renewcommand*{\chaptitlefont}{\normalfont\Huge\sffamily} 
+
+% This gets us TOC entries sans-serif
+\renewcommand{\cftchapterfont}{\normalfont\sffamily}   
+\renewcommand{\cftsectionfont}{\normalfont\sffamily} 
+\renewcommand{\cftfigurefont}{\normalfont\sffamily} 
+\renewcommand{\cfttablefont}{\normalfont\sffamily} 
+\renewcommand{\cftchapterpagefont}{\normalfont\sffamily}   
+\renewcommand{\cftsectionpagefont}{\normalfont\sffamily} 
+
+% Put "appendix" in TOC
+%\renewcommand*{\cftchaptername}{Chapter\space}
+\renewcommand*{\cftappendixname}{Appendix\space}
+
+% Also, want sans serif for sections/subsections. And do we want numbering?
+%\renewcommand*{\setsectitlefont}{\normalfont\bfseries\sffamily}
+\setsecheadstyle{\large\bfseries\sffamily\memRTLraggedright}
+
+% This removes first paragraph indent and adds space between paragraphs.
+\setlength{\parindent}{0pt}
+\nonzeroparskip
+
+% Fix some Overfull \hbox messages in main.toc
+% https://tex.stackexchange.com/questions/49887/overfull-hbox-warning-for-toc-entries-when-using-memoir-documentclass
+\renewcommand*{\cftdotsep}{1}
+\setpnumwidth{3em}
+\setrmarg{4em}
+
+% ???
+\let\Item\item
+\newcommand\SpecialItem{\renewcommand\item[1][]{\Item[\textbullet~\bfseries##1]}}
+\renewcommand\enddescription{\endlist\global\let\item\Item}
+
+\graphicspath{{images/}{diagrams/}}
+
+\makeindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% languages for \lst
+%\input{listings.tex}
+
+% \term and other custom macros
+%\input{custom.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\verbatimfont{\fontfamily{beramono}\ttfamily\footnotesize\selectfont}
+
+\sloppybottom %This allows latex to give us bottom space vs weird para spacing
+\pagestyle{Ruled}
+\frontmatter
+
+\input{titlepages.tex}
+
+\pagebreak
+
+\clearpage
+\tableofcontents*
+\clearpage
+
+%\textsf{\listoffigures*}
+%\clearpage
+
+%\listoftables*
+%\clearpage
+
+%\chapter{Preface}
+%\input{chapters/000_foreword.tex}
+
+\mainmatter
+
+\chapterstyle{ell3}
+
+$body$ 
+
+
+
+%%%%%
+
+\chapterstyle{bianchi2}
+
+\end{document}
+

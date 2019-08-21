@@ -43,7 +43,7 @@ sed -i 's/\-\ //g' $filename.txt
 
 # Remove page numbers and weird linefeeds
 
-echo "Removing hyphenation and line feeds from $filename.txt"
+echo "Removing page numbers and line feeds from $filename.txt"
 sed -i 's/^[0-9].*\o14//g' $filename.txt
 sed -i 's/\o14//g' $filename.txt
 

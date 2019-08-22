@@ -83,7 +83,7 @@ Will add examples in the future, but the EASIEST way to use this while it's in d
     
     ln -s epub-ocr-and-translate/templates templates
     
-    sh scripts/ocr.sh mypdf.pdf
+    sh scripts/ocr.sh mypdf.pdf eng
     
     python scripts/trans.py -i mypdf.txt -s en -t es -w 3
       (This is slow, but if you don't have a Google translate API key, works without blockage for about 12 hours. If you have an api key, use "-e gcloud")

@@ -1,5 +1,8 @@
 \documentclass[11pt]{memoir}
 
+\usepackage{fontspec} 
+\usepackage[english]{babel}
+\setmainfont[Ligatures=TeX]{Linux Libertine O}
 % https://tex.stackexchange.com/questions/427451/dot-between-chapter-number-and-figure-number-disapear-after-update
 \makeatletter
 \renewcommand{\counterwithin}{\@ifstar{\@csinstar}{\@csin}}
@@ -267,7 +270,7 @@
 \title{\HUGE\textbf{\textsf{$title$}}\\ \vspace*{10pt} \Large \textit{$subtitle$}}
 
 \author{$author$}
-%\date{$pubdate$}
+\date{}
 
 \maketitle
 %\thispagestyle{empty}

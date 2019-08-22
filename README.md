@@ -5,14 +5,14 @@
 Scripts to scan a PDF, auto-translate, process, and create epub and PDF output...these scripts are quick and dirty: YMMV, use at your own risk, etc. etc.
 
 **Dependencies:**
-- python 2.7
+- python 2.7 (non-built-in modules used include: google.cloud guess_language pycountry)
 - ImageMagick
 - tesseract
 - For translation, Google Translate API (with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). 
 - pandoc
 - xetex
 - ebook-viewer (optional; to view output)
-
+- For LaTeX, applicable language packs (for example, you'll need to `sudo apt install texlive-lang-cyrillic` for russian, `texlive-lang-spanish` for Spanish, etc)
 
 ### Quick summary:
 
@@ -68,6 +68,8 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
     And exports the language you specify. Usage is ``python print-lang.py input_file two_letter_lang_code``
     
 Will add examples in the future, but the EASIEST way to use this while it's in development is to do something like this:
+
+    pip install google.cloud guess_language pycountry
     
     mkdir my_book_directory
     
@@ -83,8 +85,8 @@ Will add examples in the future, but the EASIEST way to use this while it's in d
     
     sh scripts/ocr.sh mypdf.pdf
     
-    python scripts/trans.py -i mypdf.txt -s en -t es -w 20
-      (This is slow, but if you don't have a Google translate API key, works without blockage for about 12 hours.)
+    python scripts/trans.py -i mypdf.txt -s en -t es -w 3
+      (This is slow, but if you don't have a Google translate API key, works without blockage for about 12 hours. If you have an api key, use "-e gcloud")
     
     python scripts/split.py -i mypdf.txt-2lang.md -d CHAPTER
     
@@ -94,4 +96,6 @@ Will add examples in the future, but the EASIEST way to use this while it's in d
       (Set these the way you want, title, author, etc.)
     
     sh scripts/extract.sh es
-      (where 'es' is the language you want to build for, leave blank if you skipped the translation step and only have one language)
+      (where 'es' is the language you want to build for, leave blank if you skipped the translation step and only have one language; note also that you'll need to install the appropriate texlive package -- like `texlive-lang-spanish` or `texlive-lang-cyrillic` to switch languages.)
+
+You may also want to install epubcheck if you're planning on kindlegenning your epub output; it chokes on a lot of special characters and doesn't provide useful errors, but epubcheck should find them for you.

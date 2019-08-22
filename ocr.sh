@@ -30,30 +30,30 @@ echo "OCRing with tesseract"
 for i in `ls singles/*.tiff`; do trunc_txt=`echo $i |awk -F ".tiff$" '{print $1}'`;tesseract -l $lang $i $trunc_txt; done;
 
 #recombine file
-echo "Recombining text files to $filename.txt"
-for i in `ls singles/*.txt |sort -V`; do cat $i >> $filename.txt; done;
+echo "Recombining text files to $trunc_file.txt"
+for i in `ls singles/*.txt |sort -V`; do cat $i >> $trunc_file.txt; done;
 
 # Fix linebreaks
-echo "Fixing linebreaks in $filename.txt"
-sed -i -e ':a;N;$!ba;s/\(.\)\n/\1 /g' -e 's/\n/\n\n/' $filename.txt
+echo "Fixing linebreaks in $trunc_file.txt"
+sed -i -e ':a;N;$!ba;s/\(.\)\n/\1 /g' -e 's/\n/\n\n/' $trunc_file.txt
 
 # Remove hyphenation
-echo "Removing hyphenation from $filename.txt"
-sed -i 's/\-\ //g' $filename.txt
+echo "Removing hyphenation from $trunc_file.txt"
+sed -i 's/\-\ //g' $trunc_file.txt
 
 # Remove page numbers and weird linefeeds
 
-echo "Removing page numbers and line feeds from $filename.txt"
-sed -i 's/^[0-9].*\o14//g' $filename.txt
-sed -i 's/\o14//g' $filename.txt
+echo "Removing page numbers and line feeds from $trunc_file.txt"
+sed -i 's/^[0-9].*\o14//g' $trunc_file.txt
+sed -i 's/\o14//g' $trunc_file.txt
 
 # Change dumbquotes to smartquotes
 
 echo "Changing quotes to smartquotes for translate-shell. Unterminated quotes cause issues with line-by-line translation sent via shell; once translated, you may want to change back"
-sed -i -zEe 's/\x27\x27/"/g; s/\x27([^\x27]*)\x27/‘\1’/g; s/"([^"]*)"/“\1”/g; ' $filename.txt
+sed -i -zEe 's/\x27\x27/"/g; s/\x27([^\x27]*)\x27/‘\1’/g; s/"([^"]*)"/“\1”/g; ' $trunc_file.txt
 # Find unmatched quotes and backticks
-sed -i 's/`/‘/g' $filename.txt
-sed -i 's/"/”/g' $filename.txt
-echo "OCR process complete. Full OCRed text is available at $filename.txt. Individual PDF, TIFF and text files are located in the singles/ directory"
+sed -i 's/`/‘/g' $trunc_file.txt
+sed -i 's/"/”/g' $trunc_file.txt
+echo "OCR process complete. Full OCRed text is available at $trunc_file.txt. Individual PDF, TIFF and text files are located in the singles/ directory"
 
 

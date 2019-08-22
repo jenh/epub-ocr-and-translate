@@ -23,8 +23,8 @@ f.write("view: book_xx_epub popopen\nFILES=\\\n")
 for line in files:
     line = line.rsplit(".", 1)[ 0 ] + "_" + "xx.md"
     f.write("\t" + line + "\\\n")
-f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat variables.yaml titlepages.md $(FILES) | pandoc --latex-engine=xelatex --template=kindlebook.tex -o book_xx.pdf\n") 
-f.write("\nepub/book_xx.epub: $(FILES)\n\tcat variables.yaml titlepages.md $(FILES) | pandoc  --toc --toc-depth=4 --epub-stylesheet=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
+f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat variables.yaml $(FILES) | pandoc --latex-engine=xelatex --template=paperback.tex -o book_xx.pdf\n") 
+f.write("\nepub/book_xx.epub: $(FILES)\n\tcat variables.yaml $(FILES) | pandoc  --toc --toc-depth=4 --epub-stylesheet=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
 
 f.close()
 

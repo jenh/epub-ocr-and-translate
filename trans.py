@@ -86,6 +86,6 @@ else:
           x,
           target_language=target_lang,
           source_language=source_lang)
-        output_file.write("\n" + translation['translatedText'].encode("utf-8"))
+        output_file.write("\n" + translation['translatedText'].encode("utf-8") + "\n")
 
 print "Translation output located in " + output_file_name 

@@ -66,3 +66,32 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
         This is in English
 
     And exports the language you specify. Usage is ``python print-lang.py input_file two_letter_lang_code``
+    
+Will add examples in the future, but the EASIEST way to use this while it's in development is to do something like this:
+    
+    mkdir my_book_directory
+    
+    cp mypdf.pdf my_book_directory
+    
+    cd my_book_directory && git clone https://github.com/jenh/epub-ocr-and-translate.git
+    
+    ln -s epub-ocr-and-translate scripts
+    
+      (Just for ease of use when running stuff)
+    
+    ln -s epub-ocr-and-translate/templates templates
+    
+    sh scripts/ocr.sh mypdf.pdf
+    
+    python scripts/trans.py -i mypdf.txt -s en -t es -w 20
+      (This is slow, but if you don't have a Google translate API key, works without blockage for about 12 hours.)
+    
+    python scripts/split.py -i mypdf.txt-2lang.md -d CHAPTER
+    
+    python scripts/makemake.py
+    
+    vi variables.yaml
+      (Set these the way you want, title, author, etc.)
+    
+    sh scripts/extract.sh es
+      (where 'es' is the language you want to build for, leave blank if you skipped the translation step and only have one language)

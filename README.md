@@ -39,7 +39,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
    
     **Usage:** 
     
-    `python split.py filename.txt CHAPTER` 
+    `python split.py -i filename.txt -d CHAPTER` 
     
     (where CHAPTER is the chapter-delimiter; accepts UTF-8, so you can use other languages where necessary. For example, if your source text is Russian, you could use "Глава"). 
 

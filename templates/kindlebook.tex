@@ -43,7 +43,7 @@
 	% Print version
 	\newcommand{\isebook}{0}
 	\newcommand{\theppendix}{\appendix}
-	\usepackage{kpfonts}
+	\usepackage{bookman}
 	\newlength{\imgwidth}
 	\newcommand{\inclgraphics}[2][]{\includegraphics[#1]{#2}}
 
@@ -112,6 +112,7 @@
 \settypeblocksize{7in}{4.25in}{*}
 \setlrmargins{1.05in}{*}{*}
 \setulmargins{1in}{*}{*}
+\footskip=.5in
 \checkandfixthelayout
 \newcommand*{\PRINTBOOK}{}
 
@@ -217,8 +218,8 @@
 \setsecheadstyle{\large\bfseries\sffamily\memRTLraggedright}
 
 % This removes first paragraph indent and adds space between paragraphs.
-\setlength{\parindent}{0pt}
-\nonzeroparskip
+%\setlength{\parindent}{0pt}
+%\nonzeroparskip
 
 % Fix some Overfull \hbox messages in main.toc
 % https://tex.stackexchange.com/questions/49887/overfull-hbox-warning-for-toc-entries-when-using-memoir-documentclass
@@ -250,9 +251,62 @@
 
 \sloppybottom %This allows latex to give us bottom space vs weird para spacing
 \pagestyle{Ruled}
+\renewcommand\chaptermark[1]{%
+  \markboth{\MakeUppercase{#1}}{}
+}
+\makeevenhead{Ruled}{}{\textsc{$author$}}{}
+\makeoddhead{Ruled}{}{\small{\textsc{$title$}}}{}
+\makeevenfoot{Ruled}{}{\thepage}{}
+\makeoddfoot{Ruled}{}{\thepage}{}
 \frontmatter
 
-\input{titlepages.tex}
+% Including titlepages would be better, but running into issues where Pandoc can't expand variables.
+%\input{titlepages.tex}
+
+%%%% Title page %%%
+\title{\HUGE\textbf{\textsf{$title$}}\\ \vspace*{10pt} \Large \textit{$subtitle$}}
+
+\author{$author$}
+%\date{$pubdate$}
+
+\maketitle
+%\thispagestyle{empty}
+
+\pagebreak
+\vfill
+
+\noindent
+{\Large{\textbf{\textsc{$title$}}}}\\
+\begin{small}
+Copyright \textcopyright $year$ by $author$
+\vspace{.5cm}
+
+\noindent
+All rights reserved.
+No part of this book may be reproduced without written permission from the author.
+
+\vspace{20pt}
+
+\noindent
+ISBN-13: $isbn13$\\
+ISBN-10: $isbn10$
+
+\vspace{20pt}
+
+%\noindent
+%\textbf{Inquiries}\\
+%Please refer all inquiries to $email$ 
+
+\vspace{30pt}
+
+
+
+\vfill
+
+\end{small}
+
+\thispagestyle{empty}
+
 
 \pagebreak
 
@@ -271,7 +325,7 @@
 
 \mainmatter
 
-\chapterstyle{ell3}
+\chapterstyle{thatcher}
 
 $body$ 
 

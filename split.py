@@ -2,11 +2,26 @@
 # -*- coding: utf-8 -*
 import re
 import sys
+import argparse
 
-file = sys.argv[1]
-delimiter = sys.argv[2]
+parser = argparse.ArgumentParser(description='split.py - splits a text files into multiple text files using a specified delimiter')
+parser.add_argument('-i','--input', help='Input file', required=True)
+parser.add_argument('-d','--delimiter',help='Chapter or section delimiter, for example, CHAPTER', required=True)
+args = parser.parse_args()
 
-with open(file, 'r') as file:
+if (args.input):
+    input_file = args.input
+    print "Found input file as " + input_file
+else:
+    exit
+
+if (args.delimiter):
+    delimiter = args.delimiter
+    print "Found chapter delimiter as " + delimiter 
+else:
+    exit
+
+with open(input_file, 'r') as file:
     txt = file.read()
 
 num = 0
@@ -14,7 +29,7 @@ output = re.split(delimiter, txt)
 
 for line in output:
     chap = open(str(num).zfill(3) + ".md",'w')
-    chap.write(delimiter + line + "\n")
+    chap.write("# " + delimiter + line + "\n")
     chap.close()
     num = num + 1
     print num 

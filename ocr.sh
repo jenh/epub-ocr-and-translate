@@ -15,23 +15,23 @@ trunc_file=`echo $filename |awk -F ".pdf$" '{print $1}'`
 
 pages=`pdfinfo $filename |grep Pages |awk -F" " '{print $2}'`
 echo "Found $pages pages to process in $filename."
-mkdir singles
+mkdir $trunc_file
 
 # Separate
 echo "Separating PDF into individual files."
-pdfseparate -f 1 -l $pages $filename singles/$trunc_file-%d.pdf
+pdfseparate -f 1 -l $pages $filename $trunc_file/$trunc_file-%d.pdf
 
 #convert pdf to tif
 echo "Converting PDF files to Tiffs for OCR"
-for i in `ls singles/*`; do trunc_tiff=`echo $i |awk -F ".pdf$" '{print $1}'`;echo "converting $i to tiff"; convert -density 300 $i -depth 8 -background white -alpha Off $trunc_tiff.tiff; done;
+for i in `ls $trunc_file/*`; do trunc_tiff=`echo $i |awk -F ".pdf$" '{print $1}'`;echo "converting $i to tiff"; convert -density 300 $i -depth 8 -background white -alpha Off $trunc_tiff.tiff; done;
 
 # ocr each file
 echo "OCRing with tesseract"
-for i in `ls singles/*.tiff`; do trunc_txt=`echo $i |awk -F ".tiff$" '{print $1}'`;tesseract -l $lang $i $trunc_txt; done;
+for i in `ls $trunc_file/*.tiff`; do trunc_txt=`echo $i |awk -F ".tiff$" '{print $1}'`;tesseract -l $lang $i $trunc_txt; done;
 
 #recombine file
 echo "Recombining text files to $trunc_file.txt"
-for i in `ls singles/*.txt |sort -V`; do cat $i >> $trunc_file.txt; done;
+for i in `ls $trunc_file/*.txt |sort -V`; do cat $i >> $trunc_file.txt; done;
 
 # Fix linebreaks
 echo "Fixing linebreaks in $trunc_file.txt"
@@ -54,6 +54,6 @@ sed -i -zEe 's/\x27\x27/"/g; s/\x27([^\x27]*)\x27/‘\1’/g; s/"([^"]*)"/“\1�
 # Find unmatched quotes and backticks
 sed -i 's/`/‘/g' $trunc_file.txt
 sed -i 's/"/”/g' $trunc_file.txt
-echo "OCR process complete. Full OCRed text is available at $trunc_file.txt. Individual PDF, TIFF and text files are located in the singles/ directory"
+echo "OCR process complete. Full OCRed text is available at $trunc_file.txt. Individual PDF, TIFF and text files are located in the $trunc_file/ directory"
 
 

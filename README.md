@@ -7,10 +7,11 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
 **Dependencies:**
 - python 2.7 (non-built-in modules used include: google.cloud guess_language pycountry)
 - ImageMagick
+- poppler-utils
 - tesseract
 - For translation, Google Translate API (with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). 
 - pandoc
-- xetex
+- texlive-xetex
 - ebook-viewer (optional; to view output)
 - For LaTeX, applicable language packs (for example, you'll need to `sudo apt install texlive-lang-cyrillic` for russian, `texlive-lang-spanish` for Spanish, etc)
 

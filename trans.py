@@ -1,7 +1,6 @@
 import sys
 import textwrap
 import time
-from google.cloud import translate
 import subprocess
 import argparse
 
@@ -41,6 +40,7 @@ if (args.trans):
         trans_type = str("trans")
         print "Found engine as " + engine + " for translate-shell."
     elif trans=='gcloud':
+        from google.cloud import translate
         engine = "google"
         trans_type = str("gccloud")
         translate_client = translate.Client()

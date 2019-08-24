@@ -11,7 +11,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output..
 - tesseract
 - For translation, Google Translate API (with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). 
 - texlive with xetex: Recommend installing the entire CTAN distribution (i.e., not using yum or apt-get but using the instructions from https://www.tug.org/texlive/quickinstall.html) and do this *before* installing pandoc
-- pandoc
+- pandoc 2.8
 - ebook-viewer (optional; to view output)
 - For LaTeX, applicable language packs (for example, you'll need to `sudo apt install texlive-lang-cyrillic` for russian, `texlive-lang-spanish` for Spanish, etc)
 

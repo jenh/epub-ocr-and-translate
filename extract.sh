@@ -1,7 +1,7 @@
 
 # Builds an epub and PDF in language specified from source md files that contain multiple languages
 
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 BASEDIR=$(dirname "$0")
 
@@ -17,13 +17,13 @@ if [ $# -eq 0 ]
   sed -i 's/\.md/_xx.md/g' Makefile
 else 
   lang=`python $BASEDIR/expand_lang.py -l $1`
-  if [ $lang = None ]
+  if [ "$lang" = None ]
   then
       echo "Could not determine language. Try again with a two-letter language code or run without one to use all files."
   else
       echo "Preparing to build for $lang"
       sed -i "s/\[english\]/\[$lang\]/g" paperback.tex
-      if [ $lang != english ]
+      if [ "$lang" != english ]
       then
        sed -i 's@\\usepackage{bookman}@%\\usepackage{bookman}@g' paperback.tex 
       fi  

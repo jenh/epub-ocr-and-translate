@@ -3,6 +3,7 @@
 \usepackage{fontspec} 
 \usepackage[english]{babel}
 \setmainfont[Ligatures=TeX]{Linux Libertine O}
+\setsansfont{Linux Libertine O}
 % https://tex.stackexchange.com/questions/427451/dot-between-chapter-number-and-figure-number-disapear-after-update
 \makeatletter
 \renewcommand{\counterwithin}{\@ifstar{\@csinstar}{\@csin}}
@@ -10,12 +11,6 @@
 
 % increase spacing in TOC
 \setlength\cftsectionnumwidth{3em}
-
-% table spacing
-\usepackage[math]{cellspace}
-\cellspacetoplimit 3pt
-\cellspacebottomlimit 3pt
-\setlength{\arraycolsep}{4pt}
 
 %\newcommand{\atsign}{@}
 
@@ -165,6 +160,10 @@
 \predisplaypenalty=10000
 \postdisplaypenalty=1549
 \displaywidowpenalty=1602
+
+$if(euro)$
+  \usepackage{eurosym}
+$endif$
 
 % Puts footnotes at the actual bottom
 \usepackage[bottom]{footmisc}

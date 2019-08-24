@@ -2,30 +2,56 @@ import os
 import fnmatch
 import re
 
+book_path = os.getcwd()
+
+scripts_path = os.path.dirname(os.path.realpath(__file__))
+
 f = open('Makefile','w')
 
 myfiles = fnmatch.filter(os.listdir('.'), '[0-9]*.md')
 
-
 files = []
 
 for line in myfiles:
-    pattern = re.compile(r'\_[a-z][a-z]')
-    if pattern.findall(line): 
-        pass
-    else: 
-        files.append(line)
+    files.append(line)
 
 files = sorted(files)
 
 f.write("view: book_xx_epub popopen\nFILES=\\\n")
 
+"""
+
+  Some notes on pandoc options we're setting here, as
+  a lot of it can break if you're on an older version
+  of pandoc (or may become obsolete in a future version.
+  We're using 2.8 here. Most linux distros
+  provide 1.x.
+
+  -f gfm is to keep pandoc from crashing by using all 
+  available memory on cloud servers. Can be removed on 
+  real hardware (even if the real hardware has much less 
+  memory than the VM...) There's got to be a better fix, 
+  but this works for now.
+
+  --metadata-file specifies the yaml metadata file. pandoc 
+  used your yaml as long as the file was compiled, but 
+  this no longer works in 2.8.
+
+  --top-level-division is also needed in 2.8, older 
+  versions would interpret # in markdown as a chapter 
+  division, but no longer.
+
+"""
+
 for line in files:
     line = line.rsplit(".", 1)[ 0 ] + "_" + "xx.md"
     f.write("\t" + line + "\\\n")
-f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat variables.yaml $(FILES) | pandoc --latex-engine=xelatex --template=paperback.tex -o book_xx.pdf\n") 
-f.write("\nepub/book_xx.epub: $(FILES)\n\tcat variables.yaml $(FILES) | pandoc  --toc --toc-depth=4 --epub-stylesheet=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
+f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm --pdf-engine=xelatex --template=paperback.tex -o book_xx.pdf\n") 
+f.write("\nepub/book_xx.epub: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm --toc --toc-depth=4 --css=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
 
 f.close()
 
-os.popen('cp templates/* .') 
+copy_templates = "cp " + scripts_path + "/templates/* " + book_path + "/"
+os.popen(copy_templates)
+
+print "\nAdded makefile and templates to current directory.\n\nEdit **variables.yaml** with project-specific metadata values and then run:\n\n sh " + scripts_path + "/extract.sh\n\nto build PDF and EPUB files.\n"

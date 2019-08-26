@@ -27,11 +27,12 @@ f.write("view: book_xx_epub popopen\nFILES=\\\n")
   We're using 2.8 here. Most linux distros
   provide 1.x.
 
-  -f gfm is to keep pandoc from crashing by using all 
-  available memory on cloud servers. Can be removed on 
-  real hardware (even if the real hardware has much less 
-  memory than the VM...) There's got to be a better fix, 
-  but this works for now.
+  -f gfm (Github-flavored Markdown) is to keep pandoc 
+  from crashing by using all available memory on cloud 
+  servers. More investigation should be done to see if 
+  there's a better parsing option with more features 
+  and still doesn't eat up all the memory. +smart gives
+  us emdashes and smartquotes.
 
   --metadata-file specifies the yaml metadata file. pandoc 
   used your yaml as long as the file was compiled, but 
@@ -46,8 +47,8 @@ f.write("view: book_xx_epub popopen\nFILES=\\\n")
 for line in files:
     line = line.rsplit(".", 1)[ 0 ] + "_" + "xx.md"
     f.write("\t" + line + "\\\n")
-f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm --pdf-engine=xelatex --template=paperback.tex -o book_xx.pdf\n") 
-f.write("\nepub/book_xx.epub: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm --toc --toc-depth=4 --css=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
+f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm+smart --pdf-engine=xelatex --template=paperback.tex -o book_xx.pdf\n") 
+f.write("\nepub/book_xx.epub: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm+smart --toc --toc-depth=4 --css=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
 
 f.close()
 

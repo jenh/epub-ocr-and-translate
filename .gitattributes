@@ -1,0 +1,3 @@
+# Linguist thinks this is a css project for some reason...guessing because it's the largest file
+*.py linguist-language=Python
+*.css linguist-language=Python

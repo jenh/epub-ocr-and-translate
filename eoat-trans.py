@@ -1,10 +1,12 @@
+#!/usr/bin/env python2.7
+
 import sys
 import textwrap
 import time
 import subprocess
 import argparse
 
-parser = argparse.ArgumentParser(description='trans.py - translates text files from one language to another and combines them in a single file for later processing')
+parser = argparse.ArgumentParser(description='eoat-trans.py - translates text files from one language to another and combines them in a single file for later processing')
 parser.add_argument('-i','--input', help='Input file', required=True)
 parser.add_argument('-s','--source',help='Source language', required=True)
 parser.add_argument('-t','--target',help='Target language', required=True)
@@ -60,7 +62,7 @@ else:
     wait_secs = 2
 
 doc = []
-output_file_name = input_file + "-2lang.md"
+output_file_name = input_file + "-2lang.txt"
 
 output_file = open(output_file_name,'a',0)
 
@@ -73,19 +75,27 @@ with open(input_file) as input:
 
 if trans_type=='trans':
     for x in doc:
-        output_file.write("\n" + x + "\n")
+        try:
+            output_file.write("\n" + x + "\n")
+        except IOError as e:
+    # one example is broken pipe
+            if e.strerror.lower() == 'broken pipe':
+                exit(0)
+            raise       # other real IOError
         time.sleep(wait_secs)
         translated = "trans -b -e " + engine + " -s " + source_lang + " -t " +  target_lang + " \"" + x + "\""
         translation = subprocess.check_output(translated,shell=True)
         output_file.write("\n" + translation)
+        sys.stdout.flush()
 else:
     for x in doc:
         output_file.write("\n" + x + "\n")
+        sys.stdout.flush()
         time.sleep(wait_secs)
         translation = translate_client.translate(
           x,
           target_language=target_lang,
           source_language=source_lang)
         output_file.write("\n" + translation['translatedText'].encode("utf-8") + "\n")
-
+        sys.stdout.flush()
 print "Translation output located in " + output_file_name 

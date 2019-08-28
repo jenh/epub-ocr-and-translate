@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*
 import re
 import sys
 import argparse
 
-parser = argparse.ArgumentParser(description='split.py - splits a text files into multiple text files using a specified delimiter')
+parser = argparse.ArgumentParser(description='eoat-split - splits a text files into multiple text files using a specified delimiter')
 parser.add_argument('-i','--input', help='Input file', required=True)
 parser.add_argument('-d','--delimiter',help='Chapter or section delimiter, for example, CHAPTER', required=True)
 args = parser.parse_args()

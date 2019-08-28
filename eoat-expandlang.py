@@ -1,9 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*
 import pycountry
 import argparse
+import os
 
-parser = argparse.ArgumentParser(description='expand_lang.py - splits a text files into multiple text files using a specified delimiter')
+scriptname = os.path.basename(__file__)
+
+parsearg = scriptname + ": splits a text file into multiple files using a specified delimiter"
+parser = argparse.ArgumentParser(description=parsearg)
 parser.add_argument('-l','--language', help='Two letter language code', required=True)
 args = parser.parse_args()
 
@@ -15,6 +19,3 @@ if (args.language):
         print ccode.name.lower()
     else:
        print "None" 
-else:
-    print "Need two-letter language code. Usage: python expand_lang.py -l en"
-    exit

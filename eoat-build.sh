@@ -4,10 +4,19 @@
 #!/usr/bin/bash
 
 BASEDIR=$(dirname "$0")
+scriptname=`basename "$0"`
+
+if [ ! -f "/usr/local/bin/$scriptname" ]; then
+  eoat_type="local"
+  printf "\nFound local directory as $BASEDIR\n"
+else
+  printf "\nFound system installation\n"
+  eoat_type="system"
+fi
 
 if [ $# -eq 0 ]
   then
-    echo "No arguments supplied, assuming no multi-language support, using all .md files in current directory. If this is not your intention, CTRL-C and rerun using 'sh extract.sh en' where en is the two-letter language you want to run."
+    echo "No arguments supplied, assuming no multi-language support, using all .md files in current directory. If this is not your intention, CTRL-C and rerun using 'sh eoat-extract en' where en is the two-letter language you want to run."
   sleep 3;
   sed -i 's/_xx.md/.md/g' Makefile
   cat Makefile
@@ -15,8 +24,12 @@ if [ $# -eq 0 ]
   make epub/book_xx.epub
   #ebook-viewer book_xx.epub
   sed -i 's/\.md/_xx.md/g' Makefile
-else 
-  lang=`python $BASEDIR/expand_lang.py -l $1`
+else
+  if [ "$eoat_type" = local ]; then	
+    lang=`python $BASEDIR/eoat-expandlang.py -l $1`
+  else  
+    lang=`eoat-expandlang -l $1`
+  fi
   if [ "$lang" = None ]
   then
       echo "Could not determine language. Try again with a two-letter language code or run without one to use all files."
@@ -29,7 +42,13 @@ else
       fi  
       sed -i "s/\_xx/\_$1/g" Makefile
       cat Makefile
-      for i in `ls *.md |grep -v _[[:alpha:]][[:alpha:]].md`; do python $BASEDIR/print-lang.py $i $1; done;
+      for i in `ls *.md |grep -v _[[:alpha:]][[:alpha:]].md`; do 
+        if [ "$eoat_type" = local ]; then 
+          python $BASEDIR/eoat-printlang.py $i $1; 
+	else
+	  eoat-printlang $i $1;
+	fi
+      done
       sed -i 's/_xx.tex/_$1.tex/g' Makefile
       make pdf/book_$1.pdf
       make epub/book_$1.epub

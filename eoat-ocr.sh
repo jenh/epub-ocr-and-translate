@@ -1,10 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 # ocr.sh: Given a PDF, outputs an OCRed text file. 
 
 # Usage: sh ocr.sh filename.pdf 3-letter-language-code
 
+if [ ! -f "/usr/local/bin/$scriptname" ]; then
+  eoat_type="local"
+  myexec=$0
+else
+  eoat_type="system"
+  myexec="eoat-ocr"
+fi
+
 if [ $# -ne 2 ]; then
-  echo 1>&2 "Usage: $0 PDF_FILE_NAME THREE_LETTER_SOURCE_LANGUAGE_CODE"
+  printf "\nUsage: $myexec PDF_FILE_NAME THREE_LETTER_SOURCE_LANGUAGE_CODE\n\n"
   exit 3
 fi
 

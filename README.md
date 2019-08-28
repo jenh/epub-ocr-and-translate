@@ -2,7 +2,7 @@
 
 ### An in-progress set of tools for creating epubs in multiple languages
 
-Scripts to scan a PDF, auto-translate, process, and create epub and PDF output...these scripts are quick and dirty: YMMV, use at your own risk, etc. etc.
+Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. Getting the dependencies in order can be tricky, currently working on a public AMI and possibly Docker instance.
 
 **Dependencies:**
 - python 2.7 (non-built-in modules used include: google.cloud guess_language pycountry)

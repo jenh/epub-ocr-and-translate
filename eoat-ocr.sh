@@ -3,7 +3,7 @@
 
 # Usage: sh ocr.sh filename.pdf 3-letter-language-code
 
-if [ ! -f "/usr/local/bin/$scriptname" ]; then
+if [ ! -f "/usr/bin/$scriptname" ]; then
   eoat_type="local"
   myexec=$0
 else
@@ -36,6 +36,9 @@ for i in `ls $trunc_file/*`; do trunc_tiff=`echo $i |awk -F ".pdf$" '{print $1}'
 # ocr each file
 echo "OCRing with tesseract"
 for i in `ls $trunc_file/*.tiff`; do trunc_txt=`echo $i |awk -F ".tiff$" '{print $1}'`;tesseract -l $lang $i $trunc_txt; done;
+
+# remove the tiff files post-OCR 
+rm -rf $trunc_file/$trunc_tiff.tiff
 
 #recombine file
 echo "Recombining text files to $trunc_file.txt"

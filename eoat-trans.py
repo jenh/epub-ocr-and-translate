@@ -36,8 +36,7 @@ engines = ['google','deepl','bing','apertium','yandex']
 
 if (args.trans):
     trans = args.trans
-    engine_match = [True for match in engines if match in trans]
-    if True in engine_match:
+    if trans in engines:
         engine = trans 
         trans_type = str("trans")
         print "Found engine as " + engine + " for translate-shell."

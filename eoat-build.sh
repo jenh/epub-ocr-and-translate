@@ -6,7 +6,7 @@
 BASEDIR=$(dirname "$0")
 scriptname=`basename "$0"`
 
-if [ ! -f "/usr/local/bin/$scriptname" ]; then
+if [ ! -f "/usr/bin/$scriptname" ]; then
   eoat_type="local"
   printf "\nFound local directory as $BASEDIR\n"
 else

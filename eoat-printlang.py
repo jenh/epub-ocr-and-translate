@@ -5,7 +5,7 @@
 # i.e., python print-lang.py 04.md ru or python print-lang.py 04.md en
 
 import sys
-import guess_language
+import enchant
 from guess_language import guessLanguage
 
 input_file = sys.argv[1]

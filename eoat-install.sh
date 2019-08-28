@@ -22,9 +22,9 @@ for i in `ls $basedir |grep -E "*sh|*py"`
   do
     bin_name="${i%%.*}"
     echo $filename
-    echo "Linking /opt/eoat-tools/$i to /usr/local/bin/$bin_name"
-    ln -s /opt/eoat-tools/$i /usr/local/bin/$bin_name
-    chmod 755 /usr/local/bin/$bin_name
+    echo "Linking /opt/eoat-tools/$i to /usr/bin/$bin_name"
+    ln -s /opt/eoat-tools/$i /usr/bin/$bin_name
+    chmod 755 /usr/bin/$bin_name
   done
 
-  printf "\neoat-tools installed to /opt/eoat-tools and linked at /usr/local/bin.\n\n"
+  printf "\neoat-tools installed to /opt/eoat-tools and linked at /usr/bin.\n\n"

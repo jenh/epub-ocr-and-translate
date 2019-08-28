@@ -9,7 +9,7 @@ from subprocess import call
 import argparse
 
 # Check for system vs local install
-install = os.path.isfile('/usr/local/bin/eoat-tool')
+install = os.path.isfile('/usr/bin/eoat-tool')
 
 # Get script and working directories
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -24,11 +24,8 @@ else:
     args = " ".join(sys.argv[2:arglength])
     args = [a.strip() for a in args.split("--")]
     argstopass = "\n".join(args)
-
-    print argstopass
 modes = ['ocr','trans','split','make','build']
-mode_match = [True for match in modes if match in mode]
-if True in mode_match:
+if mode in modes: 
     if install == True:
         mycommand = "eoat-" + mode + " " + argstopass
     else:

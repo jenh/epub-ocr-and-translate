@@ -20,8 +20,8 @@ fi
 for i in `ls /opt/eoat-tools/ | grep -E "eoat-"`
   do
     bin_name="${i%%.*}"
-    echo "Removing /usr/local/bin/$bin_name"
-    unlink /usr/local/bin/$bin_name
+    echo "Removing /usr/bin/$bin_name"
+    unlink /usr/bin/$bin_name
  done
 
 echo "Removing files from /opt/eoat-tools"

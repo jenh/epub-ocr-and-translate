@@ -4,7 +4,7 @@
 
 Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. Getting the dependencies in order can be tricky, currently working on a public AMI and possibly Docker instance.
 
-**Dependencies:**
+## Dependencies:
 - python 2.7 (non-built-in modules used include: google.cloud guess_language pycountry). guess_language won't detect properly unless you also install pyenchant (Fedora or Ubuntu packages are fine) and guess-language-spirit. requirements.txt shows my EC2 instance's pip freeze output
 - ImageMagick
 - poppler-utils
@@ -16,7 +16,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
 - For LaTeX, applicable language packs (for example, you'll need to `sudo apt install texlive-lang-cyrillic` for russian, `texlive-lang-spanish` for Spanish, etc)
 - epubcheck & kindlegen (optional, if you're planning on generating Kindle deliverables)
 
-### Quick Start
+## Quick Start
 
 1. Check out this project: 
   
@@ -60,7 +60,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
 
     (where fr is the two letter language code of the translation you want to epub/PDF)
 
-### Quick summary of the scripts included:
+## Standard workflow:
 
 1. OCR a PDF with `eoat-ocr.sh`
 
@@ -112,3 +112,22 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
         This is in English
 
     And exports the language you specify. Usage is ``python eoat-printlang.py input_file two_letter_lang_code``
+
+## Other scripts:
+
+- eoat-cleanup.sh: The file cleanup components from eoat-ocr.sh without the ocr part.
+
+- eoat-corpusclean.py: Utility to clean lines that match a provided regex from two language corpus training files. Useful if you're plugging OpenNMT into your system.
+
+- eoat-expandlang.py: Utility to feed back a babel-friendly language package name when provided a two-letter language code (used by eoat-build). 
+
+- eoat-install.sh: Installs these scripts to /opt and symlinks to /usr/bin so that you can run from any working directory.
+
+- eoat-printlang.py: Given a filename and language code, searches file for language that matches the language code and exports into a new file. Used by eoat-build.
+
+- eoat-process.sh: A basic translator in bash, just runs translate-shell. For translations, eoat-trans.py has more extensibility and features, but sometimes you just need to do a quick run.
+
+- eoat-tool.py: Wrapper script for the basic core building tools.
+
+- eoat-uninstall.sh: Uninstalls eoat-tools from /opt/ and unlinks eoat utilities /usr/bin.
+ 

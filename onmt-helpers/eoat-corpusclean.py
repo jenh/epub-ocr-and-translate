@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description='eoat-corpusclean: If specified cha
 parser.add_argument('-s','--source', help='Source file that contains training data that needs scrubbing', required=True)
 parser.add_argument('-t','--target',help='Target file that needs the corresponding lines removed', required=True)
 parser.add_argument('-r','--regex',help='Any lines that contain matches will be removed',required=False)
+parser.add_argument('-k','--keep',help='Any lines that contain matches will be removed',required=False)
 args = parser.parse_args()
 
 if (args.source):
@@ -24,13 +25,25 @@ else:
 
 if (args.regex):
     regex = args.regex
+    uregex = True
     print ("Found regex as " + regex)
-
 else:
     regex = "a-zA-Z" 
+    uregex = False
+
+if (args.keep):
+    keep = args.keep
+else:
+    keep = None
+
+if (keep != None) and (uregex == True):
+    print ("Can\'t use both keep and regex.")
+    sys.exit(0)
+else:
+    pass
 
 num = 1
-deleted_lines = []
+match_lines = []
 
 output_file_source_name = source_file + "_clean"
 
@@ -40,27 +53,50 @@ output_file_target_name = target_file + "_clean"
 
 output_file_target = open(output_file_target_name,'w',0)
 
-with open(source_file, 'r') as file:
-  for line in file:
-    myregex = r'[{}]'.format(regex)
-    mymatch = bool(re.findall(myregex,line))
-    if mymatch:
-        #print "Found latin characters in line " + str(num) + ":" + line
-        deleted_lines.append(num)
-    else:
-        output_file_source.write(line) 
-        output_file_source.flush()
-    num = num + 1
+if (keep == None):
+    with open(source_file, 'r') as file:
+      for line in file:
+        myregex = r'[{}]'.format(regex)
+        mymatch = bool(re.findall(myregex,line))
+        if mymatch:
+            match_lines.append(num)
+        else:
+            output_file_source.write(line) 
+            output_file_source.flush()
+        num = num + 1
+else:
+    with open(source_file, 'r') as file:
+        for line in file:
+            myregex = r'[{}]'.format(regex)
+            mymatch = bool(re.findall(myregex,line))
+            if mymatch:
+                match_lines.append(num)
+                output_file_source.write(line)
+                output_file_source.flush()
+            else:
+                pass
+            num = num+1
 
 output_file_source.close()
 
-with open(target_file, 'r') as file:
-  for i, line in enumerate(file):
-    i = i+1
-    if i in deleted_lines:
-        pass
-    else:
-        output_file_target.write(line)
-        output_file_target.flush()
+if (keep != None):
+    with open(target_file, 'r') as file:
+      for i, line in enumerate(file):
+        i = i+1
+        if i in match_lines:
+            output_file_target.write(line)
+            output_file_target.flush()
+        else:
+            pass
+else:
+    with open(target_file, 'r') as file:
+      for i, line in enumerate(file):
+        i = i+1
+        if i in match_lines:
+            pass
+        else:
+            output_file_target.write(line)
+            output_file_target.flush()
+
 output_file_target.close()
-print ("found a total of " + str(len(deleted_lines)) + " mixed lines")
+print ("Found a total of " + str(len(match_lines)) + " matched lines")

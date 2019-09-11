@@ -1,10 +1,10 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 from guess_language import guessLanguage
 
 enguess = guessLanguage('hi')
 
 if str(enguess) == 'en':
-    print "PASS"
+    print("PASS")
 else:
-    print "FAIL"
+    print("FAIL")

@@ -109,6 +109,7 @@ This script will take a mixed sentence for input and translate untranslated piec
 
 ### eoat-postprocess.py command line options:
 
+```
   -h, --help            show this help message and exit
   -s SENTENCE, --sentence SENTENCE
                         Sentence to translate
@@ -121,4 +122,5 @@ This script will take a mixed sentence for input and translate untranslated piec
   -T TABLE, --table TABLE
                         dictionary table name
   -u, --showunknowns    Surround post-processed words with brackets
+```
 

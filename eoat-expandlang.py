@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*
 import pycountry
 import argparse
@@ -13,9 +13,8 @@ args = parser.parse_args()
 
 if (args.language):
     lang = args.language.lower()
-#    print "Found language as " + lang
     ccode = pycountry.languages.get(alpha_2=lang)
     if ccode is not None:
-        print ccode.name.lower()
+        print(ccode.name.lower())
     else:
-       print "None" 
+       print("None") 

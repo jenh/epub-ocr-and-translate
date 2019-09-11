@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 import sys
 import textwrap
@@ -16,19 +16,19 @@ args = parser.parse_args()
 
 if (args.input):
     input_file = args.input
-    print "Found input file as " + input_file
+    print("Found input file as " + input_file)
 else:
     exit
 
 if (args.source):
     source_lang = args.source
-    print "Found source language code as " + source_lang
+    print("Found source language code as " + source_lang)
 else:
     exit
 
 if (args.target):
     target_lang = args.target
-    print "Found target language code as " + target_lang
+    print("Found target language code as " + target_lang)
 else:
     exit
 
@@ -39,21 +39,21 @@ if (args.trans):
     if trans in engines:
         engine = trans 
         trans_type = str("trans")
-        print "Found engine as " + engine + " for translate-shell."
+        print("Found engine as " + engine + " for translate-shell.")
     elif trans=='gcloud':
         from google.cloud import translate
         engine = "google"
         trans_type = str("gccloud")
         translate_client = translate.Client()
-        print "Found engine as paid Google Translate API."
+        print("Found engine as paid Google Translate API.")
     else:
         engine = "google"
         trans_type = str("trans")
-        print "Engine not found, using translate-shell with Google."
+        print("Engine not found, using translate-shell with Google.")
 else:
     engine = "google"
     trans_type = str("trans")
-    print "Engine not specified, using translate-shell with Google."
+    print("Engine not specified, using translate-shell with Google.")
 
 if (args.wait):
     wait_secs = float(args.wait)
@@ -97,4 +97,4 @@ else:
           source_language=source_lang)
         output_file.write("\n" + translation['translatedText'].encode("utf-8") + "\n")
         sys.stdout.flush()
-print "Translation output located in " + output_file_name 
+print("Translation output located in " + output_file_name)

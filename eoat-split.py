@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*
 import re
 import sys
@@ -11,13 +11,13 @@ args = parser.parse_args()
 
 if (args.input):
     input_file = args.input
-    print "Found input file as " + input_file
+    print("Found input file as " + input_file)
 else:
     exit
 
 if (args.delimiter):
     delimiter = args.delimiter
-    print "Found chapter delimiter as " + delimiter 
+    print("Found chapter delimiter as " + delimiter) 
 else:
     exit
 
@@ -32,5 +32,5 @@ for line in output:
     chap.write("# " + delimiter + line + "\n")
     chap.close()
     num = num + 1
-    print num 
+    print(num)
  

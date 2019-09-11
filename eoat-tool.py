@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*
 
 import sys
@@ -31,7 +31,7 @@ if mode in modes:
     else:
         myexec = os.popen('ls ' + dir_path + '|grep ' + mode).read().strip()
         mycommand = dir_path + "/" + myexec + " " + argstopass 
-    print "\nRunning in mode " + mode + " using " + mycommand + " \n"
+    print("\nRunning in mode " + mode + " using " + mycommand + " \n")
     exit
     call(mycommand,shell=True)
 else:
@@ -55,11 +55,11 @@ else:
     subwrapper.initial_indent = "\n\t "
     subwrapper.subsequent_indent = "\t"
     ocr_help = wrapper.fill(text=ocr_help)
-    print ocr_help
+    print(ocr_help)
     ocr_usage = subwrapper.fill(text=ocr_usage)
-    print ocr_usage
+    print(ocr_usage)
     ocr_example = subwrapper.fill(text=ocr_example)
-    print ocr_example
+    print(ocr_example)
     trans_help = wrapper.fill(text=trans_help)
     print(trans_help)
     trans_usage = subwrapper.fill(text=trans_usage)
@@ -67,18 +67,18 @@ else:
     trans_example = subwrapper.fill(text=trans_example)
     print(trans_example)
     split_help = wrapper.fill(text=split_help)
-    print split_help
+    print(split_help)
     split_usage = subwrapper.fill(text=split_usage)
-    print split_usage
+    print(split_usage)
     make_help = wrapper.fill(text=make_help)
-    print make_help
+    print(make_help)
     make_usage = subwrapper.fill(text=make_usage)
-    print make_usage
+    print(make_usage)
     build_help = wrapper.fill(text=build_help)
-    print build_help
+    print(build_help)
     build_usage = subwrapper.fill(text=build_usage)
-    print build_usage
+    print(build_usage)
     build_example = subwrapper.fill(text=build_example)
-    print build_example
-    print "\n"
+    print(build_example)
+    print("\n")
 

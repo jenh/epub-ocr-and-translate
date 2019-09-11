@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 # Takes an input and prints only the language specified
 # Usage: python print-lang.py [filename] [lang-code]
@@ -17,7 +17,6 @@ output_file = open(output_file,'w')
 
 for line in myfile:
   if guessLanguage(line) == lang:
-    #print line
     output_file.write(line + "\n")
   else:
     pass

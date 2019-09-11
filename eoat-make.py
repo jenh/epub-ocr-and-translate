@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 import os
 import fnmatch
@@ -57,4 +57,4 @@ f.close()
 copy_templates = "cp " + scripts_path + "/templates/* " + book_path + "/"
 os.popen(copy_templates)
 
-print "\nAdded makefile and templates to current directory.\n\nEdit **variables.yaml** with project-specific metadata values and then run:\n\n   " + scripts_path + "/eoat-extract.sh [2-letter language code]\n   (if running from a directory)\n\nor\n\n   eoat-extract [2-letter language code]\n   (if running from an install)\n\nto build PDF and EPUB files.\n"
+print( "\nAdded makefile and templates to current directory.\n\nEdit **variables.yaml** with project-specific metadata values and then run:\n\n   " + scripts_path + "/eoat-extract.sh [2-letter language code]\n   (if running from a directory)\n\nor\n\n   eoat-extract [2-letter language code]\n   (if running from an install)\n\nto build PDF and EPUB files.\n")

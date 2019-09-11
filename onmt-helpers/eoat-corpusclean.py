@@ -1,5 +1,6 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*
+from __future__ import print_function
 import re
 import sys
 import argparse
@@ -13,22 +14,22 @@ args = parser.parse_args()
 
 if (args.source):
     source_file = args.source
-    print ("Found source file as " + source_file)
+    print('Found source file as ' + source_file)
 else:
     exit
 
 if (args.target):
     target_file = args.target
-    print ("Found target as " + target_file)
+    print('Found target as ' + target_file)
 else:
     exit
 
 if (args.regex):
     regex = args.regex
     uregex = True
-    print ("Found regex as " + regex)
+    print('Found regex as ' + regex)
 else:
-    regex = "a-zA-Z" 
+    regex = 'a-zA-Z' 
     uregex = False
 
 if (args.keep):
@@ -37,7 +38,7 @@ else:
     keep = None
 
 if (keep != None) and (uregex == True):
-    print ("Can\'t use both keep and regex.")
+    print('Can\'t use both keep and regex.')
     sys.exit(0)
 else:
     pass
@@ -45,11 +46,11 @@ else:
 num = 1
 match_lines = []
 
-output_file_source_name = source_file + "_clean"
+output_file_source_name = source_file + '_clean'
 
 output_file_source = open(output_file_source_name,'w',0)
 
-output_file_target_name = target_file + "_clean"
+output_file_target_name = target_file + '_clean'
 
 output_file_target = open(output_file_target_name,'w',0)
 
@@ -62,7 +63,7 @@ if (keep == None):
             match_lines.append(num)
         else:
             output_file_source.write(line) 
-            output_file_source.flush()
+        #    output_file_source.flush()
         num = num + 1
 else:
     with open(source_file, 'r') as file:
@@ -72,7 +73,7 @@ else:
             if mymatch:
                 match_lines.append(num)
                 output_file_source.write(line)
-                output_file_source.flush()
+        #        output_file_source.flush()
             else:
                 pass
             num = num+1
@@ -85,7 +86,7 @@ if (keep != None):
         i = i+1
         if i in match_lines:
             output_file_target.write(line)
-            output_file_target.flush()
+        #    output_file_target.flush()
         else:
             pass
 else:
@@ -96,7 +97,7 @@ else:
             pass
         else:
             output_file_target.write(line)
-            output_file_target.flush()
+        #    output_file_target.flush()
 
 output_file_target.close()
-print ("Found a total of " + str(len(match_lines)) + " matched lines")
+print('Found a total of ' + str(len(match_lines)) + ' matched lines')

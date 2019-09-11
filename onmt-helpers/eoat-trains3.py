@@ -1,4 +1,4 @@
-#! /usr/bin/env python2.7
+#! /usr/bin/env python
 
 import boto3
 import argparse
@@ -30,22 +30,22 @@ else:
     training_script = '/usr/bin/opennmt-train'
 if (args.input_data):
     input_data = args.input_data
-    print ('Found training data file as ' + input_data)
+    print('Found training data file as ' + input_data)
 else:
    sys.exit()
 if (args.model_file):
     model_file = args.model_file
-    print ('Found model file prefix as ' + model_file)
+    print('Found model file prefix as ' + model_file)
 else:
     sys.exit()
 if (args.train_from):
     train_from = ' --train_from ' + args.train_from
-    print ('Resuming training using ' + train_from)
+    print('Resuming training using ' + train_from)
 else:
     train_from = '' 
 if (args.checkpoint):
     checkpoint = args.checkpoint
-    print ('Saving a checkpoint file every ' + checkpoint + ' steps')
+    print('Saving a checkpoint file every ' + checkpoint + ' steps')
 else:
     checkpoint = 5000
 if (args.world_size):
@@ -72,18 +72,18 @@ for bucket in available_buckets:
 if (args.s3_bucket):
     s3_bucket = args.s3_bucket
     if s3_bucket in checkbuckets:
-      print ('Found s3 bucket as ' + s3_bucket)
+      print('Found s3 bucket as ' + s3_bucket)
     else:
-      print ('Did not find ' + s3_bucket + ' in S3, creating bucket ' + s3_bucket)
+      print('Did not find ' + s3_bucket + ' in S3, creating bucket ' + s3_bucket)
       s3.create_bucket(Bucket=s3_bucket,ACL='bucket-owner-full-control')
 else:
-  print ('\nNo bucket name specified. Found the following existing buckets:\n')
+  print('\nNo bucket name specified. Found the following existing buckets:\n')
   for bucket in s3.buckets.all():
     print(bucket.name)
   sys.exit()
 
 mycommand = training_script + ' --data ' + input_data + ' --save_model ' + model_file + ' --save_checkpoint ' + checkpoint + train_from + world_size + gpu_ranks + ' &'
-print ('Using ' + mycommand + '. \nOutput logged to ' + log_file)
+print('Using ' + mycommand + '. \nOutput logged to ' + log_file)
 
 log = open(log_file,'a')
 call(mycommand,stdout=log,stderr=log,shell=True)

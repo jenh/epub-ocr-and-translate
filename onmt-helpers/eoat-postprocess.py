@@ -8,7 +8,7 @@ import re
 import argparse
 
 parser = argparse.ArgumentParser(description='EOAT post-process: After translating using OpenNMT, locate untranslated pieces and translate them using literal dictionary terms')
-parser.add_argument('-s','--sentence',help='Sentence to translate')
+parser.add_argument('-s','--sentence',help='Sentence to translate',required=True)
 parser.add_argument('-l','--language',help='Source language (two-letter-code)',required=True)
 parser.add_argument('-t','--targetlanguage',help='Target language, defaults to en',required=False)
 parser.add_argument('-d','--database',help='SQLite3 dictionary database',required=True)

@@ -44,7 +44,7 @@ else:
     pass
 
 num = 1
-match_lines = []
+match_lines = {}
 
 output_file_source_name = source_file + '_clean'
 
@@ -60,7 +60,7 @@ if (keep == None):
         myregex = r'[{}]'.format(regex)
         mymatch = bool(re.findall(myregex,line))
         if mymatch:
-            match_lines.append(num)
+            match_lines[num] = 1
         else:
             output_file_source.write(line) 
         #    output_file_source.flush()
@@ -71,7 +71,7 @@ else:
             myregex = r'[{}]'.format(regex)
             mymatch = bool(re.findall(myregex,line))
             if mymatch:
-                match_lines.append(num)
+                match_lines[num] = 1
                 output_file_source.write(line)
         #        output_file_source.flush()
             else:

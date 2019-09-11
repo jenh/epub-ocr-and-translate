@@ -48,11 +48,11 @@ match_lines = {}
 
 output_file_source_name = source_file + '_clean'
 
-output_file_source = open(output_file_source_name,'w',0)
+output_file_source = open(output_file_source_name,'w')
 
 output_file_target_name = target_file + '_clean'
 
-output_file_target = open(output_file_target_name,'w',0)
+output_file_target = open(output_file_target_name,'w')
 
 if (keep == None):
     with open(source_file, 'r') as file:

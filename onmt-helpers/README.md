@@ -20,7 +20,7 @@ nohup ~/epub-ocr-and-translate/onmt-helpers/eoat-trains3.py -e my-train.py-file-
 
 run eoat-trains3.py --help for full list of options
 
-I will probably update to support more training options in the future, this is just a first pass. OpenNMT recommends the following to replicate Google's results: 
+I will probably update to support more training options in the future, this is just a first pass. OpenNMT recommends the following to replicate Google's result (but this script does not yet support them): 
 
 python  train.py -data /tmp/de2/data -save_model /tmp/extra \
         -layers 6 -rnn_size 512 -word_vec_size 512 -transformer_ff 2048 -heads 8  \
@@ -35,7 +35,7 @@ python  train.py -data /tmp/de2/data -save_model /tmp/extra \
 
 ## eoat-getbuckets.py
 
-Not sure why I'm even checking this in, but you can run this pretty quickly to list your current s3 buckets and verify your AWS environment before jumping into the eoat-trains3 nest
+Not sure why I'm even checking this in, but you can run this pretty quickly to list your current s3 buckets and verify your AWS environment before jumping into the eoat-trains3 nest.
 
 ## eoat-onmtpost.py
 
@@ -72,9 +72,13 @@ Create a conf.json file in available-models like:
         }
     ]   
 }
+```
+
 Note that there are GPU options and such you can add here, see the forum post for details. This is just for quick setup on a CPU-bound machine (if you're moving machines a lot, can use an option of 'gpu': -1 for no GPU and set to 0,1 or whichever GPUs you're using when you're on a GPU-enabled system, but omitting the option seems to work, too).
 
 Export some variables (these are from the tutorial, you can change them if you like):
+
+```
 export HOST=127.0.0.1
 export CONFIG='./available_models/conf.json' 
 export URL_ROOT='/translator'
@@ -84,6 +88,8 @@ export IP='0.0.0.0'
 python server.py --ip $IP --port $PORT --url_root $URL_ROOT --config $CONFIG &
 
 python eoat-onmtpost.py 'I want to translate this string' [model number] 
+
+```
 
 (model number defaults to 100, only because that's what's in the example and what I cribbed; change to match whichever model id you used to label the model you want to use in conf.json)
 

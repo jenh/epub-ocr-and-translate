@@ -16,9 +16,10 @@ if [ -d "/opt/eoat-tools" ]; then
   exit
 fi
 mkdir /opt/eoat-tools
-cp -r $basedir/* /opt/eoat-tools
+cp -r $basedir/eoat-* /opt/eoat-tools/
+cp -r $basedir/onmt-helpers/eoat-* /opt/eoat-tools/
 
-for i in `ls $basedir |grep -E "*sh|*py"` 
+for i in `ls -R /opt/eoat-tools/ |grep -E "eoat-*" |grep -v :` 
   do
     bin_name="${i%%.*}"
     echo $filename

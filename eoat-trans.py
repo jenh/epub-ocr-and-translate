@@ -1,10 +1,17 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys
 import textwrap
 import time
 import subprocess
 import argparse
+
+if (sys.version_info > (3, 0)):
+    pass
+else:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 parser = argparse.ArgumentParser(description='eoat-trans.py - translates text files from one language to another and combines them in a single file for later processing')
 parser.add_argument('-i','--input', help='Input file', required=True)
@@ -40,6 +47,10 @@ if (args.trans):
         engine = trans 
         trans_type = str("trans")
         print("Found engine as " + engine + " for translate-shell.")
+    elif trans=='opennmt':
+        engine = trans
+        trans_type = str("opennmt")
+        print("Found engine as " + engine + " for OpenNMT.")
     elif trans=='gcloud':
         from google.cloud import translate
         engine = "google"
@@ -63,7 +74,7 @@ else:
 doc = []
 output_file_name = input_file + "-2lang.txt"
 
-output_file = open(output_file_name,'a',0)
+output_file = open(output_file_name,'a')
 
 max_length = 4000
 with open(input_file) as input:
@@ -85,6 +96,19 @@ if trans_type=='trans':
         translated = "trans -b -e " + engine + " -s " + source_lang + " -t " +  target_lang + " \"" + x + "\""
         translation = subprocess.check_output(translated,shell=True)
         output_file.write("\n" + translation)
+        sys.stdout.flush()
+elif trans_type=='opennmt':
+    for x in doc:
+        try:
+            output_file.write("\n")
+        except IOError as e:
+            if e.strerror.lower() == 'broken pipe':
+                exit(0)
+            raise
+        time.sleep(wait_secs)
+        translated = "eoat-onmtpost \"" + x + "\""
+        translation = subprocess.check_output(translated,shell=True)
+        output_file.write(translation.decode('utf-8'))
         sys.stdout.flush()
 else:
     for x in doc:

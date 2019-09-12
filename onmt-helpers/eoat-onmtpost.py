@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
@@ -6,6 +6,13 @@ import json
 import requests
 import sys
 import os
+
+
+if (sys.version_info > (3, 0)):
+    pass
+else:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 arglength = len(sys.argv)
 

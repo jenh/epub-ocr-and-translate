@@ -6,6 +6,7 @@
 
 import sys
 import string
+import re
 import argparse
 
 if (sys.version_info > (3, 0)):
@@ -44,8 +45,9 @@ from nltk import sent_tokenize
 sentences = sent_tokenize(text)
 for line in sentences:
     if strip_punc == True:
-       translate_table = dict((ord(char), None) for char in string.punctuation)
+       translate_table = dict((ord(char), " ") for char in string.punctuation)
        line = line.translate(translate_table)
+       line = re.sub(' +', ' ', line)
     else:
         pass
     out.write(line)

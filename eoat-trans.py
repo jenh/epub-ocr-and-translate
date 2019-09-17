@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='eoat-trans.py - translates text fi
 parser.add_argument('-i','--input', help='Input file', required=True)
 parser.add_argument('-s','--source',help='Source language', required=True)
 parser.add_argument('-t','--target',help='Target language', required=True)
-parser.add_argument('-e','--trans',help='Translation engine. For translate-shell, use google, deepl, bing, apertium, or yandex. Note that some of these may not work. By default, we use translate-shell with the Google engine. If using the paid Google Cloud-based Translate API, use gcloud',required=False)
+parser.add_argument('-e','--trans',help='Translation engine. For translate-shell, options are google, deepl, bing, apertium, or yandex. Note that some of the commercial engines may not work. By default, we use translate-shell with the Google engine. If using the paid Google Cloud-based Translate API, set the engine to gcloud; if using with OpenNMT Simple Rest Server, set it to opennmt',required=False)
 parser.add_argument('-w','--wait',help="Optional wait time to slow crawl free translation servers",required=False)
 args = parser.parse_args()
 

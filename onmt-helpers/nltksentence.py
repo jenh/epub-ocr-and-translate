@@ -50,22 +50,22 @@ file.close()
 out = open(outfile,'w')
 # split into sentences
 sentences = sent_tokenize(text) 
-for index in sentences:
-    index = index.replace('\n\n','\n').replace('\n\n','\n')
+for line in sentences:
+    line = line.replace('\n\n','\n').replace('\n\n','\n')
     if strip_punc == True:
        translate_table = dict((ord(char), " ") for char in string.punctuation)
-       index = index.translate(translate_table)
-       index = re.sub(' +', ' ', index)
+       line = line.translate(translate_table)
+       line = re.sub(' +', ' ', line)
     else:
         pass
     if long == True:
-        words = index.split() 
+        words = line.split() 
         word_count = len(words)
         if word_count > sentence_length:
-            out.write(index)
+            out.write(line)
             out.write("\n")
         else:
             pass
     else:
-        out.write(index)
+        out.write(line)
         out.write("\n")

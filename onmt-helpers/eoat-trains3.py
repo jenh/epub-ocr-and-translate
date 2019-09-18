@@ -7,55 +7,29 @@ import subprocess
 from subprocess import call
 import os
 import time
+import re
 
 # Todo: Setup OpenNMT environment
 
 log_file = 'opennmt-train.log'
 
-parser = argparse.ArgumentParser(description='eoat-trains3: Run OpenNMT training and save checkpoints out to s3. Allows worry-free training runs on spot instances')
-parser.add_argument('-e','--training_script',help='Path to OpenNMT training script. If using the EOAT AMI, this is /usr/bin/opennmt-train which links to /opt/OpenNMT-py/train.py')
-parser.add_argument('-i','--input_data',help='Data to train from (output of OpenNMT preprocess.py',required=True)
-parser.add_argument('-m','--model_file',help='Model file prefix to use for completed training models',required=True)
-parser.add_argument('-t','--train_from',help='The model file to use if restarting an interrupted training session',required=False)
-parser.add_argument('-c','--checkpoint',help='Saves a model every number of specified steps. Default is 5000',required=False)
-parser.add_argument('-s','--s3_bucket',help='Specifies the s3 bucket to periodically save training data',required=False)
-parser.add_argument('-w','--world_size',help='If GPU-enabled, number of GPUs to use. If not set, we use CPU',required=False)
-parser.add_argument('-g','--gpu_ranks',help='If GPU-enabled, list the GPUs in order of use, for example, 0 1 2 3',required=False)
-parser.add_argument('-d','--working_dir',help='Directory that holds training and checkpoint files. Defaults to current directory',required=False)
-args = parser.parse_args()
+parser = argparse.ArgumentParser(description='eoat-trains3: Run OpenNMT training and save checkpoints out to s3. Allows worry-free training runs on spot instances',add_help=False)
+parser.add_argument('--training_script',help='Path to OpenNMT training script. If using the EOAT AMI, this is /usr/bin/opennmt-train which links to /opt/OpenNMT-py/train.py')
+parser.add_argument('-data',help='Model prefix, we just grab this from training options.',required=True)
+parser.add_argument('--s3_bucket',help='Specifies the s3 bucket to periodically save training data',required=False)
+parser.add_argument('--working_dir',help='Directory that holds training and checkpoint files. Defaults to current directory',required=False)
 
+args, unknown = parser.parse_known_args()
+command = (str(' '.join(unknown)))
+
+if (args.data):
+    input_data = args.data
+else:
+    sys.exit(0)
 if (args.training_script):
     training_script = args.training_script
 else:
     training_script = '/usr/bin/opennmt-train'
-if (args.input_data):
-    input_data = args.input_data
-    print('Found training data file as ' + input_data)
-else:
-   sys.exit()
-if (args.model_file):
-    model_file = args.model_file
-    print('Found model file prefix as ' + model_file)
-else:
-    sys.exit()
-if (args.train_from):
-    train_from = ' --train_from ' + args.train_from
-    print('Resuming training using ' + train_from)
-else:
-    train_from = '' 
-if (args.checkpoint):
-    checkpoint = args.checkpoint
-    print('Saving a checkpoint file every ' + checkpoint + ' steps')
-else:
-    checkpoint = 5000
-if (args.world_size):
-    world_size = ' --world_size ' +str(args.world_size)
-else:
-     world_size = '' 
-if (args.gpu_ranks):
-    gpu_ranks = ' --gpu_ranks ' + args.gpu_ranks
-else:
-    gpu_ranks = ''
 if (args.working_dir):
     working_dir = args.working_dir
 else:
@@ -82,7 +56,7 @@ else:
     print(bucket.name)
   sys.exit()
 
-mycommand = training_script + ' --data ' + input_data + ' --save_model ' + model_file + ' --save_checkpoint ' + checkpoint + train_from + world_size + gpu_ranks + ' &'
+mycommand = "python36 " + training_script + " -data " + input_data + " " + command  + ' &'
 print('Using ' + mycommand + '. \nOutput logged to ' + log_file)
 
 log = open(log_file,'a')

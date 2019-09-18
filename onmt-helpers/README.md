@@ -14,24 +14,13 @@ Bucket names must be *globally* unique. Otherwise, you may see location constrai
 
 Syncs changes to the S3 bucket you specified, if the bucket doesn't exist, it will create it: Note that this assumes you're using the current directory for model files unless you use --working_dir (or -w). Be aware that model and training files are quite large...
 
-You're probably going to run this with nohup [command] & at the end so that it runs continuously, like:
+Pass your training parameters raw and you're probably going to run this with nohup [command] & at the end so that it runs continuously, something like:
+
+nohup python36 ~/epub-ocr-and-translate/onmt-helpers/trains.py -data notoken -layers 6 -rnn_size 512 -word_vec_size 512 -transformer_ff 2048 -heads 8 -encoder_type transformer -decoder_type transformer -position_encoding -train_steps 200000  -max_generator_batches 2 -dropout 0.1 -batch_size 4096 -batch_type tokens -normalization tokens  -accum_count 2 -optim adam -adam_beta2 0.998 -decay_method noam -warmup_steps 8000 -learning_rate 2 -max_grad_norm 0 -param_init 0  -param_init_glorot -label_smoothing 0.1 -valid_steps 10000 -save_checkpoint_steps 10000 -report_every 1000 -world_size 1 -gpu_ranks 0 --s3_bucket mysuperuniques3_bucket &
 
 nohup ~/epub-ocr-and-translate/onmt-helpers/eoat-trains3.py -e my-train.py-file-if-not-using-the-custom-AMI -i my-training-data-file -m my-model-prefix -t my-optional-saved-model-to-restart_step_90000.pt -c 1000 -s my-very-unique-s3-bucket &
 
 run eoat-trains3.py --help for full list of options
-
-I will probably update to support more training options in the future, this is just a first pass. OpenNMT recommends the following to replicate Google's result (but this script does not yet support them): 
-
-python  train.py -data /tmp/de2/data -save_model /tmp/extra \
-        -layers 6 -rnn_size 512 -word_vec_size 512 -transformer_ff 2048 -heads 8  \
-        -encoder_type transformer -decoder_type transformer -position_encoding \
-        -train_steps 200000  -max_generator_batches 2 -dropout 0.1 \
-        -batch_size 4096 -batch_type tokens -normalization tokens  -accum_count 2 \
-        -optim adam -adam_beta2 0.998 -decay_method noam -warmup_steps 8000 -learning_rate 2 \
-        -max_grad_norm 0 -param_init 0  -param_init_glorot \
-        -label_smoothing 0.1 -valid_steps 10000 -save_checkpoint_steps 10000 \
-        -world_size 4 -gpu_ranks 0 1 2 3
-
 
 ## eoat-getbuckets.py
 

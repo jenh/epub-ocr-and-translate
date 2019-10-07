@@ -9,7 +9,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
 - ImageMagick
 - poppler-utils
 - tesseract
-- For translation, Google Translate API (`pip install gcloud google-cloud-translate` with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). 
+- For translation, if using Google Translate, Google Translate API (`pip install gcloud google-cloud-translate` with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). If using Amazon Translate, the latest version of boto3 with API and region configured (`aws configure`).
 - texlive with xetex: Recommend installing the entire CTAN distribution (i.e., not using yum or apt-get but using the instructions from https://www.tug.org/texlive/quickinstall.html) and do this *before* installing pandoc
 - pandoc 2.8
 - ebook-viewer (optional; to view output)
@@ -74,7 +74,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
 
 2. Translate a file with `eoat-trans.py`
 
-    `eoat-trans.py` uses Google's Translate API, which costs $ or [`translate-shell`](https://github.com/soimort/translate-shell), which is awesome, but you can and will get blocked by translation engines, so it's not great for large texts (but you *can* specify google, bing, yandex, etc). WARNING! translate-shell with many of the engines, even Google, can be unreliable because engines WILL block you after a certain number of characters. For important work, Google Cloud API is still unfortunately your best bet, though pricey, like $10/million characters. You can also now use OpenNMT Simple REST Server as an input, the script assumes it's running locally if you set the engine to opennmt.
+    `eoat-trans.py` uses Google's Translate API, which costs $, [`translate-shell`](https://github.com/soimort/translate-shell), which is awesome, but you can and will get blocked by translation engines, so it's not great for large texts (but you *can* specify google, bing, yandex, etc), or Amazon Translate (free for 2M characters, then $). WARNING! translate-shell with many of the engines, even Google, can be unreliable because engines WILL block you after a certain number of characters. For important work, Google Cloud API is still unfortunately your best bet, though pricey, like $10/million characters. You can also now use OpenNMT Simple REST Server as an input, the script assumes it's running locally if you set the engine to opennmt.
 
     **Usage for eoat-trans.py:** `python eoat-trans.py -i source_text_file -s two-letter-source_lang -t two-letter-target_lang [-e trans|gcloud] [-w wait_seconds]`
 

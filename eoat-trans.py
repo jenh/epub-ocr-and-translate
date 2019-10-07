@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description='eoat-trans.py - translates text fi
 parser.add_argument('-i','--input', help='Input file', required=True)
 parser.add_argument('-s','--source',help='Source language', required=True)
 parser.add_argument('-t','--target',help='Target language', required=True)
-parser.add_argument('-e','--trans',help='Translation engine. For translate-shell, options are google, deepl, bing, apertium, or yandex. Note that some of the commercial engines may not work. By default, we use translate-shell with the Google engine. If using the paid Google Cloud-based Translate API, set the engine to gcloud; if using with OpenNMT Simple Rest Server, set it to opennmt',required=False)
+parser.add_argument('-e','--trans',help='Translation engine. For translate-shell, options are google, amazon, deepl, bing, apertium, or yandex. Note that some of the commercial engines may not work. By default, we use translate-shell with the Google engine. If using the paid Google Cloud-based Translate API, set the engine to gcloud; if using with OpenNMT Simple Rest Server, set it to opennmt',required=False)
 parser.add_argument('-w','--wait',help="Optional wait time to slow crawl free translation servers",required=False)
 args = parser.parse_args()
 
@@ -57,6 +57,14 @@ if (args.trans):
         trans_type = str("gccloud")
         translate_client = translate.Client()
         print("Found engine as paid Google Translate API.")
+    elif trans=='amazon':
+        import boto3
+        awstranslate_session = boto3.session.Session()
+        region = awstranslate_session.region_name
+        translate = boto3.client(service_name='translate', region_name=region, use_ssl=True)
+        engine = "amazon"
+        trans_type = str("amazon")
+        print("Found engine as Amazon translate")
     else:
         engine = "google"
         trans_type = str("trans")
@@ -95,12 +103,12 @@ if trans_type=='trans':
         time.sleep(wait_secs)
         translated = "trans -b -e " + engine + " -s " + source_lang + " -t " +  target_lang + " \"" + x + "\""
         translation = subprocess.check_output(translated,shell=True)
-        output_file.write("\n" + translation)
+        output_file.write("\n" + translation.decode('utf-8'))
         sys.stdout.flush()
 elif trans_type=='opennmt':
     for x in doc:
         try:
-            output_file.write("\n")
+            output_file.write("\n" + x + "\n")
         except IOError as e:
             if e.strerror.lower() == 'broken pipe':
                 exit(0)
@@ -109,6 +117,19 @@ elif trans_type=='opennmt':
         translated = "eoat-onmtpost \"" + x + "\""
         translation = subprocess.check_output(translated,shell=True)
         output_file.write(translation.decode('utf-8'))
+        sys.stdout.flush()
+elif trans_type=='amazon':
+    for x in doc:
+        try:
+            output_file.write("\n" + x + "\n")
+        except IOError as e:
+            if e.strerror.lower() == 'broken pipe':
+                exit(0)
+            raise
+        time.sleep(wait_secs)
+        result = translate.translate_text(Text=x,
+            SourceLanguageCode=source_lang, TargetLanguageCode=target_lang)
+        output_file.write("\n" + result.get('TranslatedText') + "\n")
         sys.stdout.flush()
 else:
     for x in doc:

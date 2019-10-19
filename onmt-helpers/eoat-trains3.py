@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import boto3
 import argparse
@@ -56,7 +56,7 @@ else:
     print(bucket.name)
   sys.exit()
 
-mycommand = "python36 " + training_script + " -data " + input_data + " " + command  + ' &'
+mycommand = "python3 " + training_script + " -data " + input_data + " " + command  + ' &'
 print('Using ' + mycommand + '. \nOutput logged to ' + log_file)
 
 log = open(log_file,'a')

@@ -18,6 +18,7 @@ fi
 mkdir /opt/eoat-tools
 cp -r $basedir/eoat-* /opt/eoat-tools/
 cp -r $basedir/onmt-helpers/eoat-* /opt/eoat-tools/
+cp -r $basedir/templates /opt/eoat-tools/templates/
 
 for i in `ls -R /opt/eoat-tools/ |grep -E "eoat-*" |grep -v :` 
   do

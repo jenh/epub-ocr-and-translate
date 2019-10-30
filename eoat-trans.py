@@ -80,7 +80,7 @@ else:
     wait_secs = 2
 
 doc = []
-output_file_name = input_file + "-2lang.txt"
+output_file_name = input_file + "_" + source_lang + "_" + target_lang + ".txt"
 
 output_file = open(output_file_name,'a')
 

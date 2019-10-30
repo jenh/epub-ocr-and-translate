@@ -6,7 +6,7 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
 
 ## Dependencies:
 - Python, most scripts have been tested with 2.7 and 3.6; some of the onmt-helper scripts require Python 3.6. Non-built-in modules used include: google.cloud guess_language pycountry. guess_language won't detect properly unless you also install pyenchant (Fedora or Ubuntu packages are fine) and guess-language-spirit. requirements.txt shows my EC2 instance's pip freeze output
-- ImageMagick
+- ImageMagick (also, open /etc/ImageMagick-6/policy.xml and change the "rights" for PDF from "none" to "read|write")
 - poppler-utils
 - tesseract
 - For translation, if using Google Translate, Google Translate API (`pip install gcloud google-cloud-translate` with GOOGLE\_APPLICATION\_CREDENTIALS in your env) and Python module or [translate-shell](https://github.com/soimort/translate-shell). If using Amazon Translate, the latest version of boto3 with API and region configured (`aws configure`).

@@ -4,7 +4,7 @@
 
 scriptname=`basename "$0"`
 
-if [ "$EUID" -ne 0 ]; then
+if [ $(id -u) -ne 0 ]; then
   echo "Must be root to run $scriptname."
   exit
 fi

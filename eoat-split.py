@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*
 import re
 import sys
@@ -21,14 +21,14 @@ if (args.delimiter):
 else:
     exit
 
-with open(input_file, 'r') as file:
+with open(input_file, 'r',encoding='utf-8') as file:
     txt = file.read()
 
 num = 0
 output = re.split(delimiter, txt)
 
 for line in output:
-    chap = open(str(num).zfill(3) + ".md",'w')
+    chap = open(str(num).zfill(3) + ".md",'w',encoding='utf-8')
     chap.write("# " + delimiter + line + "\n")
     chap.close()
     num = num + 1

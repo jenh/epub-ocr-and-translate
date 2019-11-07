@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import fnmatch
@@ -49,7 +49,7 @@ f.write("view: book_xx_epub popopen\nFILES=\\\n")
 for line in files:
     line = line.rsplit(".", 1)[ 0 ] + "_" + "xx.md"
     f.write("\t" + line + "\\\n")
-f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm+smart --pdf-engine=xelatex --template=paperback.tex -o book_xx.pdf\n") 
+f.write("\npdf/book_xx.pdf: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm+smart --pdf-engine=xelatex --template=paperback.tex -o book_xx.tex && cat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm+smart --pdf-engine=xelatex --template=paperback.tex -o book_xx.pdf\n")
 f.write("\nepub/book_xx.epub: $(FILES)\n\tcat $(FILES) | pandoc --metadata-file=variables.yaml --top-level-division=chapter -f gfm+smart --toc --toc-depth=4 --css=epub.css - -o book_xx.epub\npopopen: \n\tebook-viewer book_xx.epub\n")
 
 f.close()

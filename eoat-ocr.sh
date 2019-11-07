@@ -31,14 +31,17 @@ pdfseparate -f 1 -l $pages $filename $trunc_file/$trunc_file-%d.pdf
 
 #convert pdf to tif
 echo "Converting PDF files to Tiffs for OCR"
-for i in `ls $trunc_file/*`; do trunc_tiff=`echo $i |awk -F ".pdf$" '{print $1}'`;echo "converting $i to tiff"; convert -density 300 $i -depth 8 -background white -alpha Off $trunc_tiff.tiff; done;
-
-# ocr each file
-echo "OCRing with tesseract"
-for i in `ls $trunc_file/*.tiff`; do trunc_txt=`echo $i |awk -F ".tiff$" '{print $1}'`;tesseract -l $lang $i $trunc_txt; done;
-
-# remove the tiff files post-OCR 
-rm -rf $trunc_file/$trunc_tiff.tiff
+for i in `ls $trunc_file/*`; do 
+  echo "Found $i as PDF file"
+  trunc_tiff=`echo $i |awk -F ".pdf$" '{print $1}'`;
+  echo "Converting $i to tiff, using $trunc_tiff.tiff as output file"; 
+  convert -density 300 $i -depth 8 -background white -alpha Off $trunc_tiff.tiff; 
+  trunc_txt=`ls $trunc_file/*.tiff |head -n 1|awk -F ".tiff" '{print $1}'`; 
+  echo "OCRing $trunc_tiff.tiff"
+  tesseract -l $lang $trunc_tiff.tiff $trunc_tiff; 
+  echo "Deleting $trunc_file/$trunc_tiff.tiff"
+  rm -rf $trunc_tiff.tiff; 
+done;
 
 #recombine file
 echo "Recombining text files to $trunc_file.txt"

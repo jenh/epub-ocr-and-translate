@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -52,7 +52,7 @@ if (args.trans):
         trans_type = str("opennmt")
         print("Found engine as " + engine + " for OpenNMT.")
     elif trans=='gcloud':
-        from google.cloud import translate
+        from google.cloud import translate_v2 as translate
         engine = "google"
         trans_type = str("gccloud")
         translate_client = translate.Client()
@@ -80,12 +80,12 @@ else:
     wait_secs = 2
 
 doc = []
-output_file_name = input_file + "-2lang.txt"
+output_file_name = input_file + "_" + source_lang + "_" + target_lang + ".txt"
 
-output_file = open(output_file_name,'a')
+output_file = open(output_file_name,'a',encoding='utf-8')
 
 max_length = 4000
-with open(input_file) as input:
+with open(input_file,encoding='utf-8') as input:
     for line in input:
         lines = textwrap.wrap(line, max_length)
         for line in lines:
@@ -102,7 +102,7 @@ if trans_type=='trans':
             raise       # other real IOError
         time.sleep(wait_secs)
         translated = "trans -b -e " + engine + " -s " + source_lang + " -t " +  target_lang + " \"" + x + "\""
-        translation = subprocess.check_output(translated,shell=True)
+        translation = subprocess.check_output(translated.encode('utf-8'),shell=True)
         output_file.write("\n" + translation.decode('utf-8'))
         sys.stdout.flush()
 elif trans_type=='opennmt':
@@ -140,6 +140,6 @@ else:
           x,
           target_language=target_lang,
           source_language=source_lang)
-        output_file.write("\n" + translation['translatedText'].encode("utf-8") + "\n")
+        output_file.write("\n" + translation['translatedText'] + "\n")
         sys.stdout.flush()
 print("Translation output located in " + output_file_name)

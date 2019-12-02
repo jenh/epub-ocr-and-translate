@@ -2,7 +2,8 @@
 
 ### An in-progress set of tools for creating epubs in multiple languages
 
-Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. Getting the dependencies in order can be tricky, currently working on a public AMI and possibly Docker instance.
+Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. Getting the dependencies in order can be tricky, currently working on a public AMI and possibly Docker image (working image can be obtained via ``docker pull jenh/eoat
+`` -- apologize for the size, but it's got all of texlive inside...).
 
 ## Dependencies:
 - Python, most scripts have been tested with 2.7 and 3.6; some of the onmt-helper scripts require Python 3.6. Non-built-in modules used include: google.cloud guess_language pycountry. guess_language won't detect properly unless you also install pyenchant (Fedora or Ubuntu packages are fine) and guess-language-spirit. requirements.txt shows my EC2 instance's pip freeze output

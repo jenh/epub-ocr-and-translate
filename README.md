@@ -19,9 +19,9 @@ Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. 
 
 ## Quick Start
 
-1. Check out this project: 
+1. Clone the project: 
   
-   git checkout https://github.com/jenh/epub-ocr-and-translate
+   git clone https://github.com/jenh/epub-ocr-and-translate
 
 2. Install the tools: 
   

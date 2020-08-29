@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Uninstall tools from opt and unlink from /usr/bin
 

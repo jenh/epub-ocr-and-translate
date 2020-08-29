@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # ocr.sh: Given a PDF, outputs an OCRed text file. 
 
 # Usage: sh ocr.sh filename.pdf 3-letter-language-code

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Usage is process.sh [engine] [infile] [outfile]
 
 ENGINE=$1

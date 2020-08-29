@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 # Runs cleanup options from ocr.sh for one-off operations
 

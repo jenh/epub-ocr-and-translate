@@ -1,7 +1,7 @@
 
 # Builds an epub and PDF in language specified from source md files that contain multiple languages
 
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 BASEDIR=$(dirname "$0")
 scriptname=`basename "$0"`
@@ -16,7 +16,7 @@ fi
 
 if [ $# -eq 0 ]
   then
-    echo "No arguments supplied, assuming no multi-language support, using all .md files in current directory. If this is not your intention, CTRL-C and rerun using 'sh eoat-extract en' where en is the two-letter language you want to run."
+    echo "No arguments supplied, assuming no multi-language support, using all .md files in current directory. If this is not your intention, CTRL-C and rerun using 'sh eoat-build en' where en is the two-letter language you want to run."
   sleep 3;
   sed -i 's/_xx.md/.md/g' Makefile
   cat Makefile

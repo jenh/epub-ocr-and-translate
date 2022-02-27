@@ -59,9 +59,9 @@ else
  fi
 fi
 
-sed -i 's/_[[:alpha:]][[:alpha:]].md/_xx.md/' Makefile 
-sed -i 's/_[[:alpha:]][[:alpha:]].epub/_xx.epub/' Makefile
-sed -i 's/_[[:alpha:]][[:alpha:]].pdf/_xx.pdf/' Makefile
-sed -i 's/_[[:alpha:]][[:alpha:]].tex/_xx.tex/' Makefile
+sed -i 's/_[[:alpha:]][[:alpha:]].md/_xx.md/g' Makefile 
+sed -i 's/_[[:alpha:]][[:alpha:]].epub/_xx.epub/g' Makefile
+sed -i 's/_[[:alpha:]][[:alpha:]].pdf/_xx.pdf/g' Makefile
+sed -i 's/_[[:alpha:]][[:alpha:]].tex/_xx.tex/g' Makefile
 
 #ebook-viewer book_$1.epub

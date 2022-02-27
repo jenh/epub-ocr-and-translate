@@ -5,8 +5,7 @@
 # i.e., python print-lang.py 04.md ru or python print-lang.py 04.md en
 
 import sys
-import enchant
-from guess_language import guessLanguage
+from langdetect import detect
 
 input_file = sys.argv[1]
 lang = sys.argv[2]
@@ -16,7 +15,14 @@ myfile = open(input_file,'r',encoding='utf-8')
 output_file = open(output_file,'w',encoding='utf-8')
 
 for line in myfile:
-  if guessLanguage(line) == lang:
-    output_file.write(line + "\n")
+  if line.isspace():
+      pass
   else:
-    pass
+    try:
+      if detect(line) == lang:
+        output_file.write(line + "\n")
+      else:
+        pass
+    except:
+      print("Cannot determine language for line: ",line)
+      output_file.write(line)

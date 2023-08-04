@@ -2,7 +2,7 @@
 
 ### An in-progress set of tools for creating epubs in multiple languages
 
-Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. Getting the dependencies in order can be tricky, currently working on a public AMI and possibly Docker image (working image can be obtained via ``docker pull jenh/eoat
+Scripts to scan a PDF, auto-translate, process, and create epub and PDF output. Getting the dependencies in order can be tricky (a working image can be obtained via ``docker pull jenh/eoat:v2
 `` -- apologize for the size, but it's got all of texlive inside...).
 
 ## Dependencies:

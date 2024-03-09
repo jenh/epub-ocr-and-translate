@@ -51,7 +51,12 @@ def main():
                 if line.isspace():
                     continue
 
-                detected_lang = detect(line.strip())
+                try:
+                    detected_lang = detect(line.strip())
+                except:
+                    detected_lang = "unknown"
+                    continue  # Skip this line if language detection fails
+
                 markdown_line = convert_to_markdown(line.strip())
 
                 if detected_lang == input_lang:

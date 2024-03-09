@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
-import sys
+import argparse
+from langdetect import detect, LangDetectException
 import csv
 import json
-from langdetect import detect
 
 # Export language pairs from EOAT dual-language markdown
 # files to JSON or csv, with the first language specified as
-# input and the second language string as the output.
+# input and the second language string as the output, with
+# an optional prompt preamble.
 
 def convert_to_markdown(text):
     escape_chars = {
@@ -21,63 +22,63 @@ def convert_to_markdown(text):
 def write_csv(data, output_file):
     with open(output_file, 'w', encoding='utf-8', newline='') as outfile:
         csv_writer = csv.writer(outfile, quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        csv_writer.writerow(['input_text', 'output_text'])  # Header names reflecting input/output concept
+        csv_writer.writerow(['input_text', 'output_text'])
         for row in data:
             csv_writer.writerow([row['input_text'], row['output_text']])
 
-def write_json(data, output_file, input_lang, output_lang):
-    ordered_data = []
-    for row in data:
-        # Ensure the ordering for JSON is as per input_lang and output_lang
-        ordered_row = {input_lang: row.get(input_lang, ''), output_lang: row.get(output_lang, '')}
-        ordered_data.append(ordered_row)
-
+def write_json(data, output_file):
     with open(output_file, 'w', encoding='utf-8') as outfile:
-        json.dump(ordered_data, outfile, ensure_ascii=False, indent=4)
+        json.dump(data, outfile, ensure_ascii=False, indent=4)
 
 def main():
-    if len(sys.argv) < 5:
-        print("Usage: python", sys.argv[0], "[filename] [input lang code] [output lang code] [output format]")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description='Converts language pairs to CSV or JSON for model tuning.')
+    parser.add_argument('input_file', help='Source file that contains language pairs from EOAT')
+    parser.add_argument('lang1', help='ISO 639 language code for the prompt')
+    parser.add_argument('lang2', help='ISO 639 language code for the response')
+    parser.add_argument('-o', '--output', default='json', choices=['csv', 'json'], help='Output file format. Defaults to JSON')
+    parser.add_argument('-p', '--preamble', default="", help='Optional preamble to prepend to each prompt')
 
-    input_file, input_lang, output_lang, output_format = sys.argv[1:5]
-    output_file = f"{input_file.rsplit('.', 1)[0]}_tuning_data.{'csv' if output_format == 'csv' else 'json'}"
+    args = parser.parse_args()
+
+    output_file = f"{args.input_file.rsplit('.', 1)[0]}_tuning_data.{args.output}"
     data = []
 
     try:
-        with open(input_file, 'r', encoding='utf-8') as myfile:
+        with open(args.input_file, 'r', encoding='utf-8') as myfile:
             pending = {}
             for line in myfile:
-                if line.isspace():
+                if line.isspace() or not line.strip():
                     continue
 
                 try:
                     detected_lang = detect(line.strip())
-                except:
-                    detected_lang = "unknown"
+                except LangDetectException:
                     continue  # Skip this line if language detection fails
 
                 markdown_line = convert_to_markdown(line.strip())
 
-                if detected_lang == input_lang:
-                    pending['input_text'] = markdown_line
-                elif detected_lang == output_lang:
+                # Prepend the prompt to input_text if provided
+                if detected_lang == args.lang1:
+                    text_with_prompt = f"{args.prompt} {markdown_line}" if args.prompt else markdown_line
+                    pending['input_text'] = text_with_prompt
+                elif detected_lang == args.lang2:
                     pending['output_text'] = markdown_line
 
                 if 'input_text' in pending and 'output_text' in pending:
-                    # Append a copy of pending to avoid mutation issues
-                    data.append(pending.copy())
+                    # Ensuring correct order in JSON output based on argument order
+                    ordered_row = {'input_text': pending['input_text'], 'output_text': pending['output_text']}
+                    data.append(ordered_row)
                     pending.clear()
 
-        if output_format == 'csv':
+        if args.output == 'csv':
             write_csv(data, output_file)
         else:
-            write_json(data, output_file, 'input_text', 'output_text')
+            write_json(data, output_file)
 
         print(f"Successfully created tuning data file: {output_file}")
 
     except FileNotFoundError:
-        print(f"Error: Input file '{input_file}' not found.")
+        print(f"Error: Input file '{args.input_file}' not found.")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 

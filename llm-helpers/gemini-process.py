@@ -1,3 +1,10 @@
+# Quick and basic script to send PDF as context to Gemini 1.5 Pro
+# with google-generativeai and ask some questions about it.
+
+# Usage:
+#
+# python3 gemini-process.py /path/to/book_en.pdf "List all characters and their descriptions in a csv table"
+
 from pathlib import Path
 import hashlib
 import google.generativeai as genai
